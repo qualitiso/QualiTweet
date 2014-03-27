@@ -1,0 +1,28 @@
+{
+    "browser": true,
+    "camelcase": true,
+    "curly": true,
+    "devel": false,
+    "eqeqeq": true,
+    "immed": true,
+    "indent": 4,
+    "latedef": false,
+    "maxcomplexity": 6,
+    "maxdepth": 2,
+    "maxparams": 5,
+    "maxstatements": 10,
+    "newcap": true,
+    "noarg": true,
+    "noempty": true,
+    "quotmark": true,
+    "trailing": true,
+    "undef": true,
+    "white": false,
+    "jquery": true,
+
+    "globals": {
+        "chrome": true,
+        "console": true,
+        "require": true
+    }
+}
