@@ -1,31 +1,31 @@
 #container {
 
     #words {
-        display: block;
-        width: 176px;
-        height: 100px;
         background-color: #f9f9f9;
+        display: block;
+        height: 100px;
         left: 15px;
+        list-style-type: none;
+        margin: 0;
         overflow-x: hidden;
         overflow-y: auto;
-        margin: 0;
         padding: 0;
-        list-style-type: none;
+        width: 176px;
 
         .word {
-            padding: 3px 6px;
             color: #2f3d4a;
+            padding: 3px 6px;
             position: relative;
         }
 
         .delete {
-            position: absolute;
-            width: 10px;
+            background-image: url('images/delete.png');
+            cursor: pointer;
             height: 10px;
+            position: absolute;
             right: 5px;
             top: 5px;
-            cursor: pointer;
-            background-image: url('images/delete.png');
+            width: 10px;
         }
     }
 }

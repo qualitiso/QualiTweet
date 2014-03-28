@@ -1,9 +1,9 @@
 .delete {
-    position: absolute;
-    width: 10px;
+    background-image: url('images/delete.png');
+    cursor: pointer;
     height: 10px;
+    position: absolute;
     right: 5px;
     top: 5px;
-    cursor: pointer;
-    background-image: url('images/delete.png');
+    width: 10px;
 }

@@ -18,7 +18,7 @@ function initConfig(grunt) {
 
             sass: {
                 files: 'src/stylesheets/**/*.scss',
-                tasks: ['scsslint', 'clean:sass','sass']
+                tasks: ['scsslint', 'clean:sass','sass:dev']
             }
         },
 
@@ -59,7 +59,20 @@ function initConfig(grunt) {
         },
 
         sass: {
-            dist: {
+            dev: {
+                options: {
+                    sourcemap: true,
+                    lineNumbers: true
+                },
+                files: {
+                    'dist/stylesheets/menu.css': 'src/stylesheets/menu.scss',
+                    'dist/stylesheets/page.css': 'src/stylesheets/page.scss'
+                }
+            },
+            prod: {
+                options: {
+                    style: 'compressed'
+                },
                 files: {
                     'dist/stylesheets/menu.css': 'src/stylesheets/menu.scss',
                     'dist/stylesheets/page.css': 'src/stylesheets/page.scss'
@@ -81,8 +94,8 @@ function initConfig(grunt) {
 
 function registerTasks(grunt) {
     grunt.registerTask('quality', ['scsslint', 'jshint']);
-    grunt.registerTask('build-dev', ['quality', 'clean', 'sass', 'browserify']);
-    grunt.registerTask('build-prod', ['quality', 'clean', 'sass', 'browserify', 'uglify']);
+    grunt.registerTask('build-dev', ['quality', 'clean', 'sass:dev', 'browserify']);
+    grunt.registerTask('build-prod', ['quality', 'clean', 'sass:prod', 'browserify', 'uglify']);
     grunt.registerTask('default', ['build-dev', 'watch']);
 }
 
