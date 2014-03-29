@@ -1,50 +1,92 @@
-chrome.runtime.onInstalled.addListener(function() {
-
+(function() {
     'use strict';
 
-    var menuItems = [
-        {
-            'title': 'Gérer les filtres',
-            'contexts': ['all'],
-            'id': 'menuReglages'
-        },
-        {
-            'title': 'Mettre en évidence',
-            'contexts': ['selection'],
-            'id': 'menuAjoutFiltreEvidence'
-        },
-        {
-            'title': 'Rendre discret',
-            'contexts': ['selection'],
-            'id': 'menuAjoutFiltreDiscret'
-        },
-        {
-            'title': 'Masquer',
-            'contexts': ['selection'],
-            'id': 'menuAjoutFiltreCache'
-        },
-        {
-            'title': 'Rechercher sur twitter',
-            'contexts': ['selection'],
-            'id': 'menuRechercherSurTwitter'
-        }
-    ];
+    var filterStore = require('./filterStore'),
+        FilterModel = require('./FilterModel');
 
-    menuItems.forEach(function(menuItem) {
-        chrome.contextMenus.create(menuItem);
-    });
-
-    //Charge les scripts uniquement sur twitter
-    chrome.tabs.getAllInWindow(null, function(tabs) {
-        tabs.forEach(function(tab) {
-
-            if (tab.url.indexOf('twitter.com') > -1) {
-
-                chrome.tabs.executeScript(tab.id, {
-                    file: 'filters.js'
-                });
+    chrome.runtime.onInstalled.addListener(function() {
+        var menuItems = [
+            {
+                'title': 'Mettre en évidence',
+                'contexts': ['selection'],
+                'id': FilterModel.filterNames.highlighted,
+                'onclick': addFilter
+            },
+            {
+                'title': 'Rendre discret',
+                'contexts': ['selection'],
+                'id': FilterModel.filterNames.muted,
+                'onclick': addFilter
+            },
+            {
+                'title': 'Masquer',
+                'contexts': ['selection'],
+                'id': FilterModel.filterNames.hidden,
+                'onclick': addFilter
+            },
+            {
+                'title': 'Séparateur',
+                'contexts': ['selection'],
+                'type': 'separator'
+            },
+            {
+                'title': 'Gérer les filtres',
+                'contexts': ['all'],
+                'onclick': displaySettingsMenu
+            },
+            {
+                'title': 'Séparateur',
+                'contexts': ['selection'],
+                'type': 'separator'
+            },
+            {
+                'title': 'Rechercher sur twitter',
+                'contexts': ['selection'],
+                'onclick': searchOnTwitter
             }
+        ];
 
+        menuItems.forEach(function(menuItem) {
+            chrome.contextMenus.create(menuItem);
+        });
+
+        execOnTwitterTabs(function (tab) {
+            chrome.tabs.executeScript(tab.id, {
+                file: 'scripts/filters.js'
+            });
         });
     });
-});
+
+    function execOnTwitterTabs(cb) {
+        chrome.tabs.query({url: '*://*.twitter.com'}, function(tabs) {
+            tabs.forEach(function(tab) {
+                cb(tab);
+            });
+        });
+    }
+
+    function displaySettingsMenu() {
+        window.open('html/menu.html', 'QualiTweet', 'height=600, width=290, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
+    }
+
+    function searchOnTwitter(info) {
+        window.open('http://twitter.com/search?q='+info.selectionText);
+    }
+
+    function addFilter(info) {
+        var filter = info.selectionText.trim();
+        var filterType = info.menuItemId;
+
+        console.log('add filter', filterType, filter);
+
+        if(filterStore.addFilter(filterType, filter)) {
+            updatePage();
+        }
+    }
+
+    function updatePage() {
+        execOnTwitterTabs(function (tab) {
+            chrome.tabs.reload(tab.id);
+        });
+    }
+}());

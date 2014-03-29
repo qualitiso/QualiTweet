@@ -1,4 +1,66 @@
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <body>
 
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="/stylesheets/menu.css">
+<script type="text/javascript" src="/scripts/menu.js"></script>
+
+
+<div id="container" class="container-fluid">
+    <h1><img src="/images/icon48.png"/> QualiTweet</h1>
+    <div id="content">
+
+        <form role="form">
+            <div class="form-group">
+                <div id="intro" data-translate="text" data-locale="intro"></div>
+            </div>
+
+
+            <hr/>
+            <h2>Masquer</h2>
+            <div class="checkbox"><label><input class="hideTweetButton" type="checkbox">Bouton Tweeter</label></div>
+            <div class="checkbox"><label><input class="hideSuggest" type="checkbox">Suggestion</label></div>
+            <div class="checkbox"><label><input class="hideTrends" type="checkbox"># tendances</label></div>
+            <div class="checkbox"><label><input class="hideFooter" type="checkbox">Footer</label></div>
+
+
+            <hr/>
+            <h2>Filtres à tweets</h2>
+
+
+            <div class="form-group">
+                <div class="input-group">
+                    <div id="currentFilterValues"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <select name="listeTypesFiltres" id="listeTypesFiltres" class="form-control">
+                    <option value="muted" selected="selected">Discret</option>
+                    <option value="highlighted">Mis en évidence</option>
+                    <option value="hidden">Caché</option>
+                </select>
+            </div>
+
+            <div id="add-word" class="form-group">
+                <div class="input-group">
+                    <input class="form-control" type="text" id="add-word-input" placeholder="Mot(s) à filtrer" />
+						<span class="input-group-btn">
+							<button class="btn btn-success" type="button" data-translate="value" data-locale="add_word" id="add-word-button">Ajouter</button>
+						</span>
+                </div>
+            </div>
+
+            <hr/>
+
+            <div class="form-group">
+                <button class="btn btn-primary" data-translate="value" data-locale="close_window" id="save">
+                    Mettre à jour
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
 </body>

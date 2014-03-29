@@ -1,3 +1,5 @@
+'use strict';
+
 document.addEventListener('DOMNodeInserted', function() {
-    console.log('QualiTweet loaded !');
+    console.log('Dom node inserted!');
 }, false);
