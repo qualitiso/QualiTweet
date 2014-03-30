@@ -66,7 +66,7 @@
     }
 
     function displaySettingsMenu() {
-        window.open('html/menu.html', 'QualiTweet', 'height=600, width=290, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
+        window.open('html/menu.html', 'QualiTweet', 'height=650, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, directories=no, status=no');
     }
 
     function searchOnTwitter(info) {

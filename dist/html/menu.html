@@ -10,19 +10,22 @@
 <div id="container" class="container-fluid">
 
     <div>
-        <a href="https://twitter.com/share?text=Enhance Twitter with QualiTweet!&url=http://goo.gl/K8ENYl&hashtags=twitter,chrome,extension,&via=Qualitiso_" target="_blank" class="btnTwitter"><img alt="Tweet" src="images/btnTweet.png"/></a>
-        <h1>QualiTweet</h1>
-        <!--<a href="http://www.qualitiso.com">www.qualitiso.com</a>-->
+        <h1>QualiTweet
+        <a href="https://twitter.com/share?text=Enhance Twitter with QualiTweet!&url=http://goo.gl/K8ENYl&hashtags=twitter,chrome,extension,&via=Qualitiso_"
+           target="_blank"
+           class="btnTwitter pull-right">
+            <img alt="Tweet" src="/images/btnTweet.png"/>
+        </a>
+        </h1>
     </div>
 
-    <br/>
     <div id="content">
 
         <form role="form">
 
             <hr/>
             <h2 data-locale="masquer_elements_page" data-translate="text"></h2>
-            <div class= "dans_un_paragraphe">
+            <div class= "dans-un-paragraphe">
                 <div class="checkbox"><label><input class="hideTweetButton" type="checkbox">
                     <span data-locale="btn_twt" data-translate="text"/>
                 </label></div>
@@ -36,14 +39,13 @@
                 </label></div>
             </div>
     </div>
-    <br/>
 
     <hr/>
     <h2 data-locale="filtrer_tweets" data-translate="text"></h2>
 
-    <div class= "dans_un_paragraphe">
+    <div class= "dans-un-paragraphe">
 
-        <div class='texte_explicatif' data-locale="select_cat" data-translate="text"></div>
+        <div class='texte-explicatif' data-locale="select_cat" data-translate="text"></div>
         <div class="form-group">
             <select name="listeTypesFiltres" id="listeTypesFiltres" class="form-control">
                 <option value="highlighted" data-locale="evidence" data-translate="text"></option>
@@ -52,14 +54,14 @@
             </select>
         </div>
 
-        <div class='texte_explicatif' data-locale="lst_filtres" data-translate="text"></div>
+        <div class='texte-explicatif' data-locale="lst_filtres" data-translate="text"></div>
         <div class="form-group">
             <div class="input-group">
-                <div id="currentFilterValues"></div>
+                <div class="words" id="currentFilterValues"></div>
             </div>
         </div>
 
-        <div class='texte_explicatif' data-locale="ajout_filtre" data-translate="text"></div>
+        <div class='texte-explicatif' data-locale="ajout_filtre" data-translate="text"></div>
         <div id="add-word" class="form-group">
             <div class="input-group">
                 <input class="form-control" type="text" id="add-word-input" placeholder="@name or #tag or text" />
@@ -77,7 +79,7 @@
     <br/>
 
     <div class="boutonCentre">
-        <div class="form-group">
+        <div class="form-group text-center">
             <button class="btn btn-primary btn-sm" data-translate="text" data-locale="maj" id="save">
 
             </button>
