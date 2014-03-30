@@ -1,8 +1,8 @@
 (function() {
     'use strict';
 
-    var FilterStore = require('./filter/FilterStore'),
-        FilterModel = require('./filter/FilterModel');
+    var FilterStore = require('./../filter/FilterStore'),
+        FilterModel = require('./../filter/FilterModel');
 
     chrome.runtime.onInstalled.addListener(function() {
         var menuItems = [
