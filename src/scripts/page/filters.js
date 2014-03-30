@@ -6,40 +6,35 @@
 var FilterModel = require('./../filter/FilterModel');
 var sommeIdTweetsLast = null;
 
-function appliqueUnFiltre(nomDuFitre) {
+function appliqueUnFiltre(filterName) {
 
-    var typeDeGet;
     var typeDeCSS;
-    var listeDesFiltres;
 
-    switch(nomDuFitre) {
+    switch(filterName) {
     case FilterModel.filterNames.hidden:
-        typeDeGet = 'getFiltresCaches';
         typeDeCSS = 'tweet_masque';
         break;
     case FilterModel.filterNames.highlighted:
-        typeDeGet = 'getFiltresEvidences';
         typeDeCSS = 'tweet_mis_en_evidence';
         break;
     case FilterModel.filterNames.muted:
-        typeDeGet = 'getFiltresDiscrets';
         typeDeCSS = 'tweet_discret';
         break;
     }
 
     chrome.runtime.sendMessage({
-        method: typeDeGet
+        method: 'filter',
+        filter: filterName
     }, function(response) {
 
-        listeDesFiltres = response.data;
+        var listeDesFiltres = response.data;
 
-        if (listeDesFiltres === null || listeDesFiltres === undefined || listeDesFiltres === '') {
+        if (!listeDesFiltres || listeDesFiltres.length === 0) {
             listeDesFiltres = [];
         }
         else {
             listeDesFiltres = JSON.parse(listeDesFiltres);
         }
-
 
         $('body').find('.content-main .tweet').each(function() {
 
@@ -76,8 +71,6 @@ function appliqueUnFiltre(nomDuFitre) {
 
 function filtreLesTweets(majForcee) {
 
-    var toto = majForcee;
-
     // - sommeIdTweets utilisé pour détecter une maj des tweets
     var sommeIdTweets = 0;
     $('.content-main .tweet').each(function() {
@@ -85,7 +78,7 @@ function filtreLesTweets(majForcee) {
     });
 
     // - En cas de nouveau tweet
-    if (sommeIdTweetsLast !== sommeIdTweets || toto === 1) {
+    if (sommeIdTweetsLast !== sommeIdTweets || majForcee) {
 
         appliqueUnFiltre('filtreDiscret');
         appliqueUnFiltre('filtreEvidence');
@@ -96,8 +89,6 @@ function filtreLesTweets(majForcee) {
 }
 
 function menageDansLaPageTwitter(majForcee) {
-
-    var toto = majForcee;
 
     // - Regarde si l'on vire ou non
     //La lecture des états déconne, des fois le truc à virer est affiché très brièvement
@@ -169,7 +160,7 @@ function menageDansLaPageTwitter(majForcee) {
                     }
 
 
-                    filtreLesTweets(toto);
+                    filtreLesTweets(majForcee);
                 });
             });
         });
@@ -178,8 +169,7 @@ function menageDansLaPageTwitter(majForcee) {
 
 
 function majInterfaceTwitter(majForcee) {
-    var toto = majForcee;
-    menageDansLaPageTwitter(toto);
+    menageDansLaPageTwitter(majForcee);
 }
 
 // - Changement de la page HTML => maj de l' IHM

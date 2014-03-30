@@ -39,9 +39,9 @@ function initConfig(grunt) {
         browserify: {
             dist: {
                 files: {
-                    'dist/scripts/filters.js': 'src/scripts/filters.js',
-                    'dist/scripts/background.js': 'src/scripts/background.js',
-                    'dist/scripts/menu.js': 'src/scripts/menu.js'
+                    'dist/scripts/filters.js': 'src/scripts/page/filters.js',
+                    'dist/scripts/background.js': 'src/scripts/background/background.js',
+                    'dist/scripts/menu.js': 'src/scripts/menu/menu.js'
                 },
                 options: {
                     debug: true
