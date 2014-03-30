@@ -1,8 +1,8 @@
 'use strict';
 
 window.onload = function() {
-    var MenuPresenter = require('./menu/menuPresenter');
+    var MenuPresenter = require('./menu/MenuPresenter');
     new MenuPresenter().init();
 
-    require('./menu/i18nService').init();
+    require('./i18nService').init();
 };

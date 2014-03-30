@@ -1,7 +1,7 @@
 'use strict';
 
-var FilterModel = require('../FilterModel'),
-    filterStore = require('../filterStore');
+var FilterModel = require('../filter/FilterModel'),
+    FilterStore = require('../filter/FilterStore');
 
 function MenuView(presenter) {
     this.presenter = presenter;
@@ -16,7 +16,7 @@ MenuView.prototype.render = function() {
 };
 
 MenuView.prototype.optionChanged = function(option) {
-    this.$options[option].checked = filterStore.getOption(option);
+    this.$options[option].checked = FilterStore.getOption(option);
 };
 
 MenuView.prototype._initOptions = function() {
@@ -24,7 +24,7 @@ MenuView.prototype._initOptions = function() {
 
     for(var optionName in FilterModel.optionNames) {
         this.$options[optionName] = document.querySelector('.'+optionName);
-        this.$options[optionName].checked = filterStore.getOption(optionName);
+        this.$options[optionName].checked = FilterStore.getOption(optionName);
         this.$options[optionName].addEventListener('change', this._userChangedOption.bind(this));
     }
 };
@@ -36,6 +36,10 @@ MenuView.prototype._initFilters = function() {
 
     this.$currentFilterValues = document.getElementById('currentFilterValues');
     this.$currentFilterValues.addEventListener('click', this._onCurrentFilterValuesClick.bind(this));
+
+    this.$addFilterButton = document.getElementById('add-word-button');
+    this.$addFilterButton.addEventListener('click', this._onAddWordToFilter.bind(this));
+    this.$addWordInput = document.getElementById('add-word-input');
 };
 
 MenuView.prototype._userChangedOption = function(event) {
@@ -49,12 +53,21 @@ MenuView.prototype.displayCurrentFilterValues = function() {
         this.$currentFilterValues.removeChild(child);
     }
 
-    filterStore.getFilter(this.currentFilter).forEach(function(value) {
+    FilterStore.getFilter(this.currentFilter).forEach(function(value) {
         var $el = document.createElement('div');
         $el.classList.add('word');
         $el.innerHTML = value + '<div class=\'delete\'></div>';
         this.$currentFilterValues.appendChild($el);
+
     }.bind(this));
+};
+
+MenuView.prototype._onAddWordToFilter = function(e) {
+    var value = this.$addWordInput.value.trim();
+    if(value.length > 0) {
+        this.presenter.onFilterAdd(this.currentFilter, value);
+        this.$addWordInput.value = '';
+    }
 };
 
 MenuView.prototype._onCurrentFilterValuesClick = function(e) {
