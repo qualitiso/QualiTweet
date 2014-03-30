@@ -8,59 +8,83 @@
 
 
 <div id="container" class="container-fluid">
-    <h1><img src="/images/icon48.png"/> QualiTweet</h1>
+
+    <div>
+        <a href="https://twitter.com/share?text=Enhance Twitter with QualiTweet!&url=http://goo.gl/K8ENYl&hashtags=twitter,chrome,extension,&via=Qualitiso_" target="_blank" class="btnTwitter"><img alt="Tweet" src="images/btnTweet.png"/></a>
+        <h1>QualiTweet</h1>
+        <!--<a href="http://www.qualitiso.com">www.qualitiso.com</a>-->
+    </div>
+
+    <br/>
     <div id="content">
 
         <form role="form">
-            <div class="form-group">
-                <div id="intro" data-translate="text" data-locale="intro"></div>
-            </div>
-
 
             <hr/>
-            <h2>Masquer</h2>
-            <div class="checkbox"><label><input class="hideTweetButton" type="checkbox">Bouton Tweeter</label></div>
-            <div class="checkbox"><label><input class="hideSuggest" type="checkbox">Suggestion</label></div>
-            <div class="checkbox"><label><input class="hideTrends" type="checkbox"># tendances</label></div>
-            <div class="checkbox"><label><input class="hideFooter" type="checkbox">Footer</label></div>
-
-
-            <hr/>
-            <h2>Filtres à tweets</h2>
-
-
-            <div class="form-group">
-                <div class="input-group">
-                    <div id="currentFilterValues"></div>
-                </div>
+            <h2 data-locale="masquer_elements_page" data-translate="text"></h2>
+            <div class= "dans_un_paragraphe">
+                <div class="checkbox"><label><input class="hideTweetButton" type="checkbox">
+                    <span data-locale="btn_twt" data-translate="text"/>
+                </label></div>
+                <div class="checkbox"><label><input class="hideSuggest" type="checkbox">
+                    <span data-locale="suggestions" data-translate="text"/>
+                </label></div>
+                <div class="checkbox"><label><input class="hideTrends" type="checkbox">
+                    <span data-locale="tendances" data-translate="text"/></label></div>
+                <div class="checkbox"><label><input class="hideFooter" type="checkbox">
+                    <span data-locale="footer" data-translate="text"/>
+                </label></div>
             </div>
-
-            <div class="form-group">
-                <select name="listeTypesFiltres" id="listeTypesFiltres" class="form-control">
-                    <option value="muted" selected="selected">Discret</option>
-                    <option value="highlighted">Mis en évidence</option>
-                    <option value="hidden">Caché</option>
-                </select>
-            </div>
-
-            <div id="add-word" class="form-group">
-                <div class="input-group">
-                    <input class="form-control" type="text" id="add-word-input" placeholder="Mot(s) à filtrer" />
-						<span class="input-group-btn">
-							<button class="btn btn-success" type="button" data-translate="value" data-locale="add_word" id="add-word-button">Ajouter</button>
-						</span>
-                </div>
-            </div>
-
-            <hr/>
-
-            <div class="form-group">
-                <button class="btn btn-primary" data-translate="value" data-locale="close_window" id="save">
-                    Mettre à jour
-                </button>
-            </div>
-        </form>
-
     </div>
+    <br/>
+
+    <hr/>
+    <h2 data-locale="filtrer_tweets" data-translate="text"></h2>
+
+    <div class= "dans_un_paragraphe">
+
+        <div class='texte_explicatif' data-locale="select_cat" data-translate="text"></div>
+        <div class="form-group">
+            <select name="listeTypesFiltres" id="listeTypesFiltres" class="form-control">
+                <option value="highlighted" data-locale="evidence" data-translate="text"></option>
+                <option value="muted" selected="selected" data-locale="discret" data-translate="text"></option>
+                <option value="hidden" data-locale="cache" data-translate="text"></option>
+            </select>
+        </div>
+
+        <div class='texte_explicatif' data-locale="lst_filtres" data-translate="text"></div>
+        <div class="form-group">
+            <div class="input-group">
+                <div id="currentFilterValues"></div>
+            </div>
+        </div>
+
+        <div class='texte_explicatif' data-locale="ajout_filtre" data-translate="text"></div>
+        <div id="add-word" class="form-group">
+            <div class="input-group">
+                <input class="form-control" type="text" id="add-word-input" placeholder="@name or #tag or text" />
+                <span class="input-group-btn">
+                    <button class="btn btn-success" type="button" data-translate="text" data-locale="ajouter" id="add-word-button" ></button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+    <br/>
+
+    <hr/>
+    <br/>
+
+    <div class="boutonCentre">
+        <div class="form-group">
+            <button class="btn btn-primary btn-sm" data-translate="text" data-locale="maj" id="save">
+
+            </button>
+        </div>
+    </div>
+    </form>
+
+</div>
 </div>
 </body>

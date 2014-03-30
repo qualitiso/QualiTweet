@@ -7,19 +7,19 @@
     chrome.runtime.onInstalled.addListener(function() {
         var menuItems = [
             {
-                'title': 'Mettre en évidence',
+                'title': chrome.i18n.getMessage( 'mettre_en_evidence'),
                 'contexts': ['selection'],
                 'id': FilterModel.filterNames.highlighted,
                 'onclick': addFilter
             },
             {
-                'title': 'Rendre discret',
+                'title': chrome.i18n.getMessage( 'rendre_discret'),
                 'contexts': ['selection'],
                 'id': FilterModel.filterNames.muted,
                 'onclick': addFilter
             },
             {
-                'title': 'Masquer',
+                'title': chrome.i18n.getMessage( 'masquer'),
                 'contexts': ['selection'],
                 'id': FilterModel.filterNames.hidden,
                 'onclick': addFilter
@@ -30,7 +30,7 @@
                 'type': 'separator'
             },
             {
-                'title': 'Gérer les filtres',
+                'title': chrome.i18n.getMessage( 'reglages'),
                 'contexts': ['all'],
                 'onclick': displaySettingsMenu
             },
@@ -40,7 +40,7 @@
                 'type': 'separator'
             },
             {
-                'title': 'Rechercher sur twitter',
+                'title': chrome.i18n.getMessage( 'recherche_twitter'),
                 'contexts': ['selection'],
                 'onclick': searchOnTwitter
             }
