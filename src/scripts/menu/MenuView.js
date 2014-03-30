@@ -11,40 +11,13 @@ MenuView.prototype.render = function() {
 
     this._initOptions();
     this._initFilters();
+    this._bindEvents();
 
     this.displayCurrentFilterValues();
 };
 
 MenuView.prototype.optionChanged = function(option) {
     this.$options[option].checked = FilterStore.getOption(option);
-};
-
-MenuView.prototype._initOptions = function() {
-    this.$options = {};
-
-    for(var optionName in FilterModel.optionNames) {
-        this.$options[optionName] = document.querySelector('.'+optionName);
-        this.$options[optionName].checked = FilterStore.getOption(optionName);
-        this.$options[optionName].addEventListener('change', this._userChangedOption.bind(this));
-    }
-};
-
-MenuView.prototype._initFilters = function() {
-    this.$filterTypeSelect = document.getElementById('listeTypesFiltres');
-    this.$filterTypeSelect.addEventListener('change', this._userChangedFilterSelection.bind(this));
-    this.currentFilter = this.$filterTypeSelect.value;
-
-    this.$currentFilterValues = document.getElementById('currentFilterValues');
-    this.$currentFilterValues.addEventListener('click', this._onCurrentFilterValuesClick.bind(this));
-
-    this.$addFilterButton = document.getElementById('add-word-button');
-    this.$addFilterButton.addEventListener('click', this._onAddWordToFilter.bind(this));
-    this.$addWordInput = document.getElementById('add-word-input');
-};
-
-MenuView.prototype._userChangedOption = function(event) {
-    var option = event.srcElement.className;
-    this.presenter.onOptionToggle(option);
 };
 
 MenuView.prototype.displayCurrentFilterValues = function() {
@@ -60,6 +33,46 @@ MenuView.prototype.displayCurrentFilterValues = function() {
         this.$currentFilterValues.appendChild($el);
 
     }.bind(this));
+};
+
+
+MenuView.prototype._initOptions = function() {
+    this.$options = {};
+
+    for(var optionName in FilterModel.optionNames) {
+        this.$options[optionName] = document.querySelector('.'+optionName);
+        this.$options[optionName].checked = FilterStore.getOption(optionName);
+    }
+};
+
+MenuView.prototype._initFilters = function() {
+    this.$filterTypeSelect = document.getElementById('listeTypesFiltres');
+    this.currentFilter = this.$filterTypeSelect.value;
+
+
+};
+
+MenuView.prototype._bindEvents = function() {
+
+    for(var optionName in FilterModel.optionNames) {
+        this.$options[optionName].addEventListener('change', this._userChangedOption.bind(this));
+    }
+
+    this.$filterTypeSelect.addEventListener('change', this._userChangedFilterSelection.bind(this));
+
+    this.$currentFilterValues = document.getElementById('currentFilterValues');
+    this.$currentFilterValues.addEventListener('click', this._onCurrentFilterValuesClick.bind(this));
+
+    this.$addFilterButton = document.getElementById('add-word-button');
+    this.$addFilterButton.addEventListener('click', this._onAddWordToFilter.bind(this));
+    this.$addWordInput = document.getElementById('add-word-input');
+
+    document.getElementById('save').addEventListener('click', this.presenter.onSave.bind(this.presenter));
+};
+
+MenuView.prototype._userChangedOption = function(event) {
+    var option = event.srcElement.className;
+    this.presenter.onOptionToggle(option);
 };
 
 MenuView.prototype._onAddWordToFilter = function(e) {

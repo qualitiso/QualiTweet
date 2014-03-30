@@ -22,6 +22,11 @@ MenuPresenter.prototype.onFilterAdd = function(filter, value) {
     }
 };
 
+MenuPresenter.prototype.onSave = function() {
+    chrome.runtime.sendMessage({method: 'rafraichiToi'});
+    window.close();
+};
+
 MenuPresenter.prototype.onFilterDelete = function (filter, value) {
     if(FilterStore.deleteFilter(filter, value)) {
         this.menuView.displayCurrentFilterValues();
