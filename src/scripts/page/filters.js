@@ -132,7 +132,7 @@ function menageDansLaPageTwitter(majForcee) {
                         $('.Footer.module').css('display', 'none');
                     }
                     else {
-                        $('.wtf-module.has-content').css('display', 'block');
+                        $('.Footer.module').css('display', 'block');
                     }
 
                     // - Vire le bouton pour twitter
@@ -140,7 +140,7 @@ function menageDansLaPageTwitter(majForcee) {
                         $('#global-new-tweet-button').css('display', 'none');
                     }
                     else {
-                        $('.wtf-module.has-content').css('display', 'block');
+                        $('#global-new-tweet-button').css('display', 'block');
                     }
 
 

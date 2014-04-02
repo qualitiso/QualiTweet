@@ -3,7 +3,7 @@
 var FilterStore = require('../filter/FilterStore'),
     Utils = require('./Utils');
 
-var Service = {
+var listener = {
 
     init: function() {
 
@@ -35,5 +35,5 @@ var types = {
 
 module.exports = {
     types: types,
-    service: Service
+    listener: listener
 };
