@@ -32,7 +32,7 @@ function initConfig(grunt) {
         },
 
         clean: {
-            js: ["dist/scripts/"],
+            js: ["dist/scripts/*", "!dist/scripts/jquery.js"],
             sass: ["dist/stylesheets/"]
         },
 
@@ -54,7 +54,7 @@ function initConfig(grunt) {
                 'src/stylesheets/*.scss'
             ],
             options: {
-                config: '.scss-lint.yml'
+                config: './.scss-lint.yml'
             }
         },
 
@@ -66,7 +66,8 @@ function initConfig(grunt) {
                 },
                 files: {
                     'dist/stylesheets/menu.css': 'src/stylesheets/menu.scss',
-                    'dist/stylesheets/page.css': 'src/stylesheets/page.scss'
+                    'dist/stylesheets/page.css': 'src/stylesheets/page.scss',
+                    'dist/stylesheets/filters.css': 'src/stylesheets/filters.scss'
                 }
             },
             prod: {

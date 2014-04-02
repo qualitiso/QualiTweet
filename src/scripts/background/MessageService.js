@@ -20,7 +20,7 @@ module.exports = {
                 sendResponse({data: FilterStore.getOption(request.option)});
                 break;
             default:
-                sendResponse({});
+                sendResponse({error: 'unknown method: '+request.method});
             }
         });
     }

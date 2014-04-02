@@ -1,6 +1,7 @@
 /* jshint maxcomplexity: 8 */
 /* jshint maxdepth: 3 */
 /* jshint maxstatements: 16 */
+/*jshint -W087 */
 'use strict';
 
 var FilterModel = require('./../filter/FilterModel');
@@ -12,13 +13,13 @@ function appliqueUnFiltre(filterName) {
 
     switch(filterName) {
     case FilterModel.filterNames.hidden:
-        typeDeCSS = 'tweet_masque';
+        typeDeCSS = 'tweet-masque';
         break;
     case FilterModel.filterNames.highlighted:
-        typeDeCSS = 'tweet_mis_en_evidence';
+        typeDeCSS = 'tweet-mis-en-evidence';
         break;
     case FilterModel.filterNames.muted:
-        typeDeCSS = 'tweet_discret';
+        typeDeCSS = 'tweet-discret';
         break;
     }
 
@@ -28,13 +29,6 @@ function appliqueUnFiltre(filterName) {
     }, function(response) {
 
         var listeDesFiltres = response.data;
-
-        if (!listeDesFiltres || listeDesFiltres.length === 0) {
-            listeDesFiltres = [];
-        }
-        else {
-            listeDesFiltres = JSON.parse(listeDesFiltres);
-        }
 
         $('body').find('.content-main .tweet').each(function() {
 
@@ -80,9 +74,9 @@ function filtreLesTweets(majForcee) {
     // - En cas de nouveau tweet
     if (sommeIdTweetsLast !== sommeIdTweets || majForcee) {
 
-        appliqueUnFiltre('filtreDiscret');
-        appliqueUnFiltre('filtreEvidence');
-        appliqueUnFiltre('filtreCache');
+        appliqueUnFiltre(FilterModel.filterNames.muted);
+        appliqueUnFiltre(FilterModel.filterNames.highlighted);
+        appliqueUnFiltre(FilterModel.filterNames.hidden);
 
         sommeIdTweetsLast = sommeIdTweets;
     }
@@ -93,42 +87,31 @@ function menageDansLaPageTwitter(majForcee) {
     // - Regarde si l'on vire ou non
     //La lecture des états déconne, des fois le truc à virer est affiché très brièvement
     chrome.runtime.sendMessage({
-        method: 'getVireTendanceState'
+        method: 'option',
+        option: FilterModel.optionNames.hideTrends
     }, function(response) {
         var vireTendanceState = response.data; //'oui' ou 'non'
-        if (vireTendanceState !== 'oui') {
-            vireTendanceState = 'non';
-        }
-
 
         chrome.runtime.sendMessage({
-            method: 'getVireSuggestionState'
+            method: 'option',
+            option: FilterModel.optionNames.hideSuggest
         }, function(response) {
             var vireSuggestionState = response.data;
-            if (vireSuggestionState !== 'oui') {
-                vireSuggestionState = 'non';
-            }
-
 
             chrome.runtime.sendMessage({
-                method: 'getVireFooterState'
+                method: 'option',
+                option: FilterModel.optionNames.hideFooter
             }, function(response) {
                 var vireFooterState = response.data;
-                if (vireFooterState !== 'oui') {
-                    vireFooterState = 'non';
-                }
-
 
                 chrome.runtime.sendMessage({
-                    method: 'getVireBoutonTweeterState'
+                    method: 'option',
+                    option: FilterModel.optionNames.hideTweetButton
                 }, function(response) {
                     var vireBoutonTweeterState = response.data;
-                    if (vireBoutonTweeterState !== 'oui') {
-                        vireBoutonTweeterState = 'non';
-                    }
 
                     // - Vire les TENDANCES
-                    if (vireTendanceState === 'oui') {
+                    if (vireTendanceState) {
                         $('.trends-inner').css('display', 'none');
                     }
                     else {
@@ -136,7 +119,7 @@ function menageDansLaPageTwitter(majForcee) {
                     }
 
                     // - Vire les suggestions
-                    if (vireSuggestionState === 'oui') {
+                    if (vireSuggestionState) {
                         $('.wtf-module.has-content').css('display', 'none');
                     }
                     else {
@@ -144,7 +127,7 @@ function menageDansLaPageTwitter(majForcee) {
                     }
 
                     // - Vire le footer de twitter
-                    if (vireFooterState === 'oui') {
+                    if (vireFooterState) {
                         $('.Footer.module').css('display', 'none');
                     }
                     else {
@@ -152,7 +135,7 @@ function menageDansLaPageTwitter(majForcee) {
                     }
 
                     // - Vire le bouton pour twitter
-                    if (vireBoutonTweeterState === 'oui') {
+                    if (vireBoutonTweeterState) {
                         $('#global-new-tweet-button').css('display', 'none');
                     }
                     else {
