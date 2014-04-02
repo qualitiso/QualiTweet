@@ -8,7 +8,7 @@ module.exports =  {
     },
 
     execOnTwitterTabs: function(cb) {
-        chrome.tabs.query({url: '*://*.twitter.com'}, function(tabs) {
+        chrome.tabs.query({url: '*://twitter.com/'}, function(tabs) {
             tabs.forEach(function(tab) {
                 cb(tab);
             });
