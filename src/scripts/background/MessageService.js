@@ -3,20 +3,21 @@
 var FilterStore = require('../filter/FilterStore'),
     Utils = require('./Utils');
 
-module.exports = {
+var Service = {
+
     init: function() {
 
         chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
             switch(request.method ) {
-            case 'rafraichiToi':
+            case types.refreshPage:
                 window.alert(chrome.i18n.getMessage('alerte_changements'));
                 Utils.updatePage();
                 sendResponse({});
                 break;
-            case 'filter':
+            case types.filter:
                 sendResponse({data: FilterStore.getFilter(request.filter)});
                 break;
-            case 'option':
+            case types.option:
                 sendResponse({data: FilterStore.getOption(request.option)});
                 break;
             default:
@@ -24,4 +25,15 @@ module.exports = {
             }
         });
     }
+};
+
+var types = {
+    refreshPage: 'refreshPage',
+    filter: 'filter',
+    option: 'option'
+};
+
+module.exports = {
+    types: types,
+    service: Service
 };

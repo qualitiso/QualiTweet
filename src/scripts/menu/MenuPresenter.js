@@ -1,6 +1,7 @@
 'use strict';
 
 var MenuView = require('./MenuView'),
+    messageTypes = require('../background/MessageService').types,
     FilterStore = require('../filter/FilterStore');
 
 function MenuPresenter() {
@@ -23,7 +24,7 @@ MenuPresenter.prototype.onFilterAdd = function(filter, value) {
 };
 
 MenuPresenter.prototype.onSave = function() {
-    chrome.runtime.sendMessage({method: 'rafraichiToi'});
+    chrome.runtime.sendMessage({method: messageTypes.refreshPage});
     window.close();
 };
 

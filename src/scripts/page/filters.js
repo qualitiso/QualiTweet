@@ -4,7 +4,8 @@
 /*jshint -W087 */
 'use strict';
 
-var FilterModel = require('./../filter/FilterModel');
+var FilterModel = require('./../filter/FilterModel'),
+    msgTypes = require('../background/MessageService').types;
 var sommeIdTweetsLast = null;
 
 function appliqueUnFiltre(filterName) {
@@ -24,7 +25,7 @@ function appliqueUnFiltre(filterName) {
     }
 
     chrome.runtime.sendMessage({
-        method: 'filter',
+        method: msgTypes.filter,
         filter: filterName
     }, function(response) {
 
@@ -87,25 +88,25 @@ function menageDansLaPageTwitter(majForcee) {
     // - Regarde si l'on vire ou non
     //La lecture des états déconne, des fois le truc à virer est affiché très brièvement
     chrome.runtime.sendMessage({
-        method: 'option',
+        method: msgTypes.option,
         option: FilterModel.optionNames.hideTrends
     }, function(response) {
         var vireTendanceState = response.data; //'oui' ou 'non'
 
         chrome.runtime.sendMessage({
-            method: 'option',
+            method: msgTypes.option,
             option: FilterModel.optionNames.hideSuggest
         }, function(response) {
             var vireSuggestionState = response.data;
 
             chrome.runtime.sendMessage({
-                method: 'option',
+                method: msgTypes.option,
                 option: FilterModel.optionNames.hideFooter
             }, function(response) {
                 var vireFooterState = response.data;
 
                 chrome.runtime.sendMessage({
-                    method: 'option',
+                    method: msgTypes.option,
                     option: FilterModel.optionNames.hideTweetButton
                 }, function(response) {
                     var vireBoutonTweeterState = response.data;

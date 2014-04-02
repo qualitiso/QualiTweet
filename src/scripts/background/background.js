@@ -3,7 +3,7 @@
 
     var FilterStore = require('./../filter/FilterStore'),
         FilterModel = require('./../filter/FilterModel'),
-        MessageService = require('./MessageService'),
+        MessageService = require('./MessageService').service,
         Utils = require('./Utils');
 
     MessageService.init();
