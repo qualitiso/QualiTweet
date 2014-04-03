@@ -4,7 +4,7 @@
     },
     "content_scripts": [{
         "css": ["stylesheets/filters.css"],
-        "js": ["scripts/filters.js"],
+        "js": ["scripts/page.js"],
         "matches": ["http://twitter.com/*", "https://twitter.com/*"]
     }],
     "default_locale": "en",

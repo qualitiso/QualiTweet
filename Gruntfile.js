@@ -6,7 +6,12 @@ function requireDeps(grunt) {
 function initConfig(grunt) {
     'use strict';
 
-    var JS_SRC = ['src/scripts/**/*.js'];
+    var JS_SRC = ['src/scripts/**/*.js'],
+        SASS_FILES = {
+            'dist/stylesheets/menu.css': 'src/stylesheets/menu.scss',
+            'dist/stylesheets/page.css': 'src/stylesheets/page.scss',
+            'dist/stylesheets/filters.css': 'src/stylesheets/filters.scss'
+        };
 
     grunt.initConfig({
 
@@ -32,14 +37,14 @@ function initConfig(grunt) {
         },
 
         clean: {
-            js: ["dist/scripts/*", "!dist/scripts/jquery.js"],
+            js: ["dist/scripts/*"],
             sass: ["dist/stylesheets/"]
         },
 
         browserify: {
             dist: {
                 files: {
-                    'dist/scripts/filters.js': 'src/scripts/page/filters.js',
+                    'dist/scripts/page.js': 'src/scripts/page/page.js',
                     'dist/scripts/background.js': 'src/scripts/background/background.js',
                     'dist/scripts/menu.js': 'src/scripts/menu/menu.js'
                 },
@@ -64,20 +69,13 @@ function initConfig(grunt) {
                     sourcemap: true,
                     lineNumbers: true
                 },
-                files: {
-                    'dist/stylesheets/menu.css': 'src/stylesheets/menu.scss',
-                    'dist/stylesheets/page.css': 'src/stylesheets/page.scss',
-                    'dist/stylesheets/filters.css': 'src/stylesheets/filters.scss'
-                }
+                files: SASS_FILES
             },
             prod: {
                 options: {
                     style: 'compressed'
                 },
-                files: {
-                    'dist/stylesheets/menu.css': 'src/stylesheets/menu.scss',
-                    'dist/stylesheets/page.css': 'src/stylesheets/page.scss'
-                }
+                files: SASS_FILES
             }
         },
 
@@ -85,7 +83,7 @@ function initConfig(grunt) {
             main: {
                 files: {
                     'dist/scripts/background.js': ['dist/scripts/background.js'],
-                    'dist/scripts/filters.js': ['dist/scripts/filters.js'],
+                    'dist/scripts/page.js': ['dist/scripts/page.js'],
                     'dist/scripts/menu.js': ['dist/scripts/menu.js']
                 }
             }
