@@ -1,16 +1,22 @@
 QualiTweet
 ==========
 
-=== Installer les dépendences ===
+### Installer les dépendences ###
 
-```npm install```
+```
+npm install
+```
 
-=== Builder ===
+### Builder ###
 
 En mode dev
 
-```grunt```
+```
+grunt
+```
 
 Pour packager
 
-```grunt build-prod```
+```
+grunt build-prod
+```
