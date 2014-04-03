@@ -15,10 +15,10 @@ var listener = {
                 sendResponse({});
                 break;
             case types.filter:
-                sendResponse({data: FilterStore.getFilter(request.filter)});
+                sendResponse({data: FilterStore.getFilter(request.name)});
                 break;
             case types.option:
-                sendResponse({data: FilterStore.getOption(request.option)});
+                sendResponse({data: FilterStore.getOption(request.name)});
                 break;
             default:
                 sendResponse({error: 'unknown method: '+request.method});

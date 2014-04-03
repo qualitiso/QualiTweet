@@ -16,6 +16,19 @@ document.addEventListener('DOMNodeInserted', function() {
     applyAllFilters();
 }, false);
 
+// --- Misc ---- //
+
+function getValue(method, name) {
+    return new Promise(function(resolve) {
+        chrome.runtime.sendMessage({
+            method: method,
+            name: name
+        }, function(response) {
+            resolve({name: name, value: response.data});
+        });
+    });
+}
+
 // ---- Filters ---- //
 
 
@@ -41,14 +54,7 @@ function applyAllFilters() {
 }
 
 function getFilterValue(filterName) {
-    return new Promise(function(resolve) {
-        chrome.runtime.sendMessage({
-            method: msgTypes.filter,
-            filter: filterName
-        }, function(response) {
-            resolve({name: filterName, value: response.data});
-        });
-    });
+    return getValue(msgTypes.filter, filterName);
 }
 
 function applyFilter(filter) {
@@ -105,35 +111,28 @@ function applyFilter(filter) {
 function applyAllOptions() {
 
     getOptionValue(FilterModel.optionNames.hideTrends)
-        .then(function(shallHide) {
-            applyOption('.trends-inner', shallHide);
+        .then(function(option) {
+            applyOption('.trends-inner', option.value);
         });
 
     getOptionValue(FilterModel.optionNames.hideSuggest)
-        .then(function(shallHide) {
-            applyOption('.wtf-module.has-content', shallHide);
+        .then(function(option) {
+            applyOption('.wtf-module.has-content', option.value);
         });
 
     getOptionValue(FilterModel.optionNames.hideFooter)
-        .then(function(shallHide) {
-            applyOption('.Footer.module', shallHide);
+        .then(function(option) {
+            applyOption('.Footer.module', option.value);
         });
 
     getOptionValue(FilterModel.optionNames.hideTweetButton)
-        .then(function(shallHide) {
-            applyOption('#global-new-tweet-button', shallHide);
+        .then(function(option) {
+            applyOption('#global-new-tweet-button', option.value);
         });
 }
 
 function getOptionValue(optionName) {
-    return new Promise(function(resolve) {
-        chrome.runtime.sendMessage({
-            method: msgTypes.option,
-            filter: optionName
-        }, function(response) {
-            resolve({name: optionName, value: response.data});
-        });
-    });
+    return getValue(msgTypes.option, optionName);
 }
 
 function applyOption(selector, shallHide) {
