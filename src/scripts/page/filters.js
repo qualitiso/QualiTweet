@@ -1,68 +1,85 @@
 /* jshint maxcomplexity: 8 */
 /* jshint maxdepth: 3 */
 /* jshint maxstatements: 16 */
-/*jshint -W087 */
 'use strict';
+
+var $ = require('jquery'),
+    Promise = require('bluebird');
 
 var FilterModel = require('./../filter/FilterModel'),
     msgTypes = require('../background/MessageService').types;
+
 var sommeIdTweetsLast = null;
 
-function appliqueUnFiltre(filterName) {
-
-    var typeDeCSS;
-
-    switch(filterName) {
-    case FilterModel.filterNames.hidden:
-        typeDeCSS = 'tweet-masque';
-        break;
-    case FilterModel.filterNames.highlighted:
-        typeDeCSS = 'tweet-mis-en-evidence';
-        break;
-    case FilterModel.filterNames.muted:
-        typeDeCSS = 'tweet-discret';
-        break;
-    }
-
-    chrome.runtime.sendMessage({
-        method: msgTypes.filter,
-        filter: filterName
-    }, function(response) {
-
-        var listeDesFiltres = response.data;
-
-        $('body').find('.content-main .tweet').each(function() {
-
-            var pseudo = $(this).data('screen-name');
-            var tweet = $.trim($(this).find('.js-tweet-text').text());
-            var contexte = $.trim($(this).find('.context').text());
-
-
-            for (var i in listeDesFiltres) {
-
-                if (listeDesFiltres[i].substr(0, 1) === '@') {
-
-                    if (pseudo.toLowerCase() === listeDesFiltres[i].replace('@', '').toLowerCase()) {
-                        $(this).addClass(typeDeCSS);
-                    }
-                    else if (!$(this).hasClass(typeDeCSS)) {
-                        $(this).removeClass(typeDeCSS);
-                    }
-
-                } else {
-
-                    if (new RegExp('(^|\\W)#?' + listeDesFiltres[i] + '($|\\W)', 'gi').test(tweet) || new RegExp('(^|\\W)#?' + listeDesFiltres[i] + '($|\\W)', 'gi').test(contexte)) {
-                        $(this).addClass(typeDeCSS);
-                    }
-                    else if(!$(this).hasClass(typeDeCSS)) {
-                        $(this).removeClass(typeDeCSS);
-                    }
-                }
-            }
+function getFilterValue(filterName) {
+    return new Promise(function(resolve) {
+        chrome.runtime.sendMessage({
+            method: msgTypes.filter,
+            filter: filterName
+        }, function(response) {
+            resolve({name: filterName, value: response.data});
         });
     });
 }
 
+function getOptionValue(optionName) {
+    return new Promise(function(resolve) {
+        chrome.runtime.sendMessage({
+            method: msgTypes.option,
+            filter: optionName
+        }, function(response) {
+            resolve({name: optionName, value: response.data});
+        });
+    });
+}
+
+function applyFilter(filter) {
+
+    var typeDeCSS;
+
+    switch(filter.name) {
+        case FilterModel.filterNames.hidden:
+            typeDeCSS = 'tweet-masque';
+            break;
+        case FilterModel.filterNames.highlighted:
+            typeDeCSS = 'tweet-mis-en-evidence';
+            break;
+        case FilterModel.filterNames.muted:
+            typeDeCSS = 'tweet-discret';
+            break;
+    }
+
+    $('body').find('.content-main .tweet').each(function() {
+
+        var pseudo = $(this).data('screen-name');
+        var tweet = $.trim($(this).find('.js-tweet-text').text());
+        var contexte = $.trim($(this).find('.context').text());
+
+        var listeDesFiltres = filter.value;
+
+        for (var i in listeDesFiltres) {
+
+            if (listeDesFiltres[i].substr(0, 1) === '@') {
+
+                if (pseudo.toLowerCase() === listeDesFiltres[i].replace('@', '').toLowerCase()) {
+                    $(this).addClass(typeDeCSS);
+                }
+                else if (!$(this).hasClass(typeDeCSS)) {
+                    $(this).removeClass(typeDeCSS);
+                }
+
+            } else {
+
+                if (new RegExp('(^|\\W)#?' + listeDesFiltres[i] + '($|\\W)', 'gi').test(tweet) || new RegExp('(^|\\W)#?' + listeDesFiltres[i] + '($|\\W)', 'gi').test(contexte)) {
+                    $(this).addClass(typeDeCSS);
+                }
+                else if(!$(this).hasClass(typeDeCSS)) {
+                    $(this).removeClass(typeDeCSS);
+                }
+            }
+        }
+    });
+}
 
 function filtreLesTweets(majForcee) {
 
@@ -75,80 +92,48 @@ function filtreLesTweets(majForcee) {
     // - En cas de nouveau tweet
     if (sommeIdTweetsLast !== sommeIdTweets || majForcee) {
 
-        appliqueUnFiltre(FilterModel.filterNames.muted);
-        appliqueUnFiltre(FilterModel.filterNames.highlighted);
-        appliqueUnFiltre(FilterModel.filterNames.hidden);
+        var filterName;
+        for(filterName in FilterModel.filterNames) {
+            getFilterValue(filterName)
+                .then(applyFilter);
+        }
 
         sommeIdTweetsLast = sommeIdTweets;
     }
 }
 
+function updateElementDisplay(selector, shallHide) {
+    if (shallHide) {
+        $(selector).css('display', 'none');
+    }
+    else {
+        $(selector).css('display', 'block');
+    }
+}
+
 function menageDansLaPageTwitter(majForcee) {
 
-    // - Regarde si l'on vire ou non
-    //La lecture des états déconne, des fois le truc à virer est affiché très brièvement
-    chrome.runtime.sendMessage({
-        method: msgTypes.option,
-        option: FilterModel.optionNames.hideTrends
-    }, function(response) {
-        var vireTendanceState = response.data; //'oui' ou 'non'
-
-        chrome.runtime.sendMessage({
-            method: msgTypes.option,
-            option: FilterModel.optionNames.hideSuggest
-        }, function(response) {
-            var vireSuggestionState = response.data;
-
-            chrome.runtime.sendMessage({
-                method: msgTypes.option,
-                option: FilterModel.optionNames.hideFooter
-            }, function(response) {
-                var vireFooterState = response.data;
-
-                chrome.runtime.sendMessage({
-                    method: msgTypes.option,
-                    option: FilterModel.optionNames.hideTweetButton
-                }, function(response) {
-                    var vireBoutonTweeterState = response.data;
-
-                    // - Vire les TENDANCES
-                    if (vireTendanceState) {
-                        $('.trends-inner').css('display', 'none');
-                    }
-                    else {
-                        $('.trends-inner').css('display', 'block');
-                    }
-
-                    // - Vire les suggestions
-                    if (vireSuggestionState) {
-                        $('.wtf-module.has-content').css('display', 'none');
-                    }
-                    else {
-                        $('.wtf-module.has-content').css('display', 'block');
-                    }
-
-                    // - Vire le footer de twitter
-                    if (vireFooterState) {
-                        $('.Footer.module').css('display', 'none');
-                    }
-                    else {
-                        $('.Footer.module').css('display', 'block');
-                    }
-
-                    // - Vire le bouton pour twitter
-                    if (vireBoutonTweeterState) {
-                        $('#global-new-tweet-button').css('display', 'none');
-                    }
-                    else {
-                        $('#global-new-tweet-button').css('display', 'block');
-                    }
-
-
-                    filtreLesTweets(majForcee);
-                });
-            });
+    getOptionValue(FilterModel.optionNames.hideTrends)
+        .then(function(shallHide) {
+            updateElementDisplay('.trends-inner', shallHide);
         });
-    });
+
+    getOptionValue(FilterModel.optionNames.hideSuggest)
+        .then(function(shallHide) {
+            updateElementDisplay('.wtf-module.has-content', shallHide);
+        });
+
+    getOptionValue(FilterModel.optionNames.hideFooter)
+        .then(function(shallHide) {
+            updateElementDisplay('.Footer.module', shallHide);
+        });
+
+    getOptionValue(FilterModel.optionNames.hideTweetButton)
+        .then(function(shallHide) {
+            updateElementDisplay('#global-new-tweet-button', shallHide);
+        });
+
+    filtreLesTweets();
 }
 
 
