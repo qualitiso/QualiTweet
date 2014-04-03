@@ -11,6 +11,35 @@ var FilterModel = require('./../filter/FilterModel'),
 
 var sommeIdTweetsLast = null;
 
+document.addEventListener('DOMNodeInserted', function() {
+    applyAllOptions();
+    applyAllFilters();
+}, false);
+
+// ---- Filters ---- //
+
+
+function applyAllFilters() {
+
+    // - sommeIdTweets utilisé pour détecter une maj des tweets
+    var sommeIdTweets = 0;
+    $('.content-main .tweet').each(function() {
+        sommeIdTweets = sommeIdTweets + parseInt($(this).attr('data-tweet-id'));
+    });
+
+    // - En cas de nouveau tweet
+    if (sommeIdTweetsLast !== sommeIdTweets) {
+
+        var filterName;
+        for(filterName in FilterModel.filterNames) {
+            getFilterValue(filterName)
+                .then(applyFilter);
+        }
+
+        sommeIdTweetsLast = sommeIdTweets;
+    }
+}
+
 function getFilterValue(filterName) {
     return new Promise(function(resolve) {
         chrome.runtime.sendMessage({
@@ -18,17 +47,6 @@ function getFilterValue(filterName) {
             filter: filterName
         }, function(response) {
             resolve({name: filterName, value: response.data});
-        });
-    });
-}
-
-function getOptionValue(optionName) {
-    return new Promise(function(resolve) {
-        chrome.runtime.sendMessage({
-            method: msgTypes.option,
-            filter: optionName
-        }, function(response) {
-            resolve({name: optionName, value: response.data});
         });
     });
 }
@@ -81,28 +99,44 @@ function applyFilter(filter) {
     });
 }
 
-function filtreLesTweets(majForcee) {
 
-    // - sommeIdTweets utilisé pour détecter une maj des tweets
-    var sommeIdTweets = 0;
-    $('.content-main .tweet').each(function() {
-        sommeIdTweets = sommeIdTweets + parseInt($(this).attr('data-tweet-id'));
-    });
+// ---- Options ---- //
 
-    // - En cas de nouveau tweet
-    if (sommeIdTweetsLast !== sommeIdTweets || majForcee) {
+function applyAllOptions() {
 
-        var filterName;
-        for(filterName in FilterModel.filterNames) {
-            getFilterValue(filterName)
-                .then(applyFilter);
-        }
+    getOptionValue(FilterModel.optionNames.hideTrends)
+        .then(function(shallHide) {
+            applyOption('.trends-inner', shallHide);
+        });
 
-        sommeIdTweetsLast = sommeIdTweets;
-    }
+    getOptionValue(FilterModel.optionNames.hideSuggest)
+        .then(function(shallHide) {
+            applyOption('.wtf-module.has-content', shallHide);
+        });
+
+    getOptionValue(FilterModel.optionNames.hideFooter)
+        .then(function(shallHide) {
+            applyOption('.Footer.module', shallHide);
+        });
+
+    getOptionValue(FilterModel.optionNames.hideTweetButton)
+        .then(function(shallHide) {
+            applyOption('#global-new-tweet-button', shallHide);
+        });
 }
 
-function updateElementDisplay(selector, shallHide) {
+function getOptionValue(optionName) {
+    return new Promise(function(resolve) {
+        chrome.runtime.sendMessage({
+            method: msgTypes.option,
+            filter: optionName
+        }, function(response) {
+            resolve({name: optionName, value: response.data});
+        });
+    });
+}
+
+function applyOption(selector, shallHide) {
     if (shallHide) {
         $(selector).css('display', 'none');
     }
@@ -111,37 +145,3 @@ function updateElementDisplay(selector, shallHide) {
     }
 }
 
-function menageDansLaPageTwitter(majForcee) {
-
-    getOptionValue(FilterModel.optionNames.hideTrends)
-        .then(function(shallHide) {
-            updateElementDisplay('.trends-inner', shallHide);
-        });
-
-    getOptionValue(FilterModel.optionNames.hideSuggest)
-        .then(function(shallHide) {
-            updateElementDisplay('.wtf-module.has-content', shallHide);
-        });
-
-    getOptionValue(FilterModel.optionNames.hideFooter)
-        .then(function(shallHide) {
-            updateElementDisplay('.Footer.module', shallHide);
-        });
-
-    getOptionValue(FilterModel.optionNames.hideTweetButton)
-        .then(function(shallHide) {
-            updateElementDisplay('#global-new-tweet-button', shallHide);
-        });
-
-    filtreLesTweets();
-}
-
-
-function majInterfaceTwitter(majForcee) {
-    menageDansLaPageTwitter(majForcee);
-}
-
-// - Changement de la page HTML => maj de l' IHM
-document.addEventListener('DOMNodeInserted', function() {
-    majInterfaceTwitter();
-}, false);
