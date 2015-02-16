@@ -1,0 +1,68 @@
+{
+    "mettre_en_evidence": {
+        "message": "Highlight"
+    },
+    "rendre_discret": {
+        "message": "Discrete"
+    },
+    "masquer": {
+        "message": "Hide"
+    },
+    "reglages": {
+        "message": "Settings"
+    },
+    "recherche_twitter": {
+        "message": "Search on Twitter"
+    },
+    "alerte_changements": {
+        "message": "Changes have been taken into account !"
+    },
+    "masquer_elements_page": {
+        "message": "Hide page elements"
+    },
+    "filtrer_tweets": {
+        "message": "Filter tweets"
+    },
+    "btn_twt": {
+        "message": "Tweeter button"
+    },
+    "suggestions": {
+        "message": "People"
+    },
+    "tendances": {
+        "message": "# trends"
+    },
+    "footer": {
+        "message": "Footer"
+    },
+    "select_cat": {
+        "message": "Select a category:"
+    },
+    "lst_filtres": {
+        "message": "Filters list:"
+    },
+    "ajout_filtre": {
+        "message": "Add a filter:"
+    },
+    "discret": {
+        "message": "Discrete"
+    },
+    "evidence": {
+        "message": "Highlighted"
+    },
+    "cache": {
+        "message": "Hidden"
+    },
+    "maj": {
+        "message": "Update"
+    },
+    "ajouter": {
+        "message": "Add"
+    },
+    "description": {
+        "message": "Enhance twitter.com with Filters and Hide functions !"
+    },
+    "title": {
+        "message": "QualiTweet"
+    }
+}

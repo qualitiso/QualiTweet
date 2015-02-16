@@ -1,0 +1,4 @@
+module.exports = {
+    HIDDEN_ELEMENTS_LIST_CHANGED: 0,
+    FILTER_TERMS_CHANGED: 1
+};

@@ -1,0 +1,68 @@
+{
+    "mettre_en_evidence": {
+        "message": "Mettre en évidence"
+    },
+    "rendre_discret": {
+        "message": "Rendre discret"
+    },
+    "masquer": {
+        "message": "Masquer"
+    },
+    "reglages": {
+        "message": "Réglages"
+    },
+    "recherche_twitter": {
+        "message": "Rechercher sur Twitter"
+    },
+    "alerte_changements": {
+        "message": "Les changements ont bien été pris en compte !"
+    },
+    "masquer_elements_page": {
+        "message": "Masquer des éléments de la page"
+    },
+    "filtrer_tweets": {
+        "message": "Filtrer les tweets"
+    },
+    "btn_twt": {
+        "message": "Bouton Tweeter"
+    },
+    "suggestions": {
+        "message": "Suggestion"
+    },
+    "tendances": {
+        "message": "# tendances"
+    },
+    "footer": {
+        "message": "Footer"
+    },
+    "select_cat": {
+        "message": "Sélectionnez une catégorie:"
+    },
+    "lst_filtres": {
+        "message": "Liste des filtres:"
+    },
+    "ajout_filtre": {
+        "message": "Ajoutez un filtre:"
+    },
+    "discret": {
+        "message": "Discret"
+    },
+    "evidence": {
+        "message": "Mis en évidence"
+    },
+    "cache": {
+        "message": "Caché"
+    },
+    "maj": {
+        "message": "Mettre à jour"
+    },
+    "ajouter": {
+        "message": "Ajouter"
+    },
+    "description": {
+        "message": "Améliorez twitter.com avec des Filtres et en Allégeant l'interface !"
+    },
+    "title": {
+        "message": "QualiTweet"
+    }
+}
