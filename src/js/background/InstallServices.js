@@ -46,11 +46,11 @@ module.exports = {
                 chrome.contextMenus.create(menuItem);
             });
 
-            Utils.execOnTwitterTabs(function (tab) {
+            /*Utils.execOnTwitterTabs(function (tab) {
                 chrome.tabs.executeScript(tab.id, {
                     file: 'scripts/filters.js'
                 });
-            });
+            });*/
         });
     }
 };

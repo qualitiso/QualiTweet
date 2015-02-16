@@ -82,7 +82,7 @@ module.exports = {
      * @private
      */
     _onGoogleSyncChanged: function(changes, areaName) {
-        // TODO Send action
+        console.log('_onGoogleSyncChanged', changes, areaName);
     },
 
     _onHiddenElementsChanged: function(hiddenElements) {
