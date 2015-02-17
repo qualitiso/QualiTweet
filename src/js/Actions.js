@@ -13,6 +13,20 @@ var Actions = {
             category: category,
             terms: terms
         });
+    },
+    createFilterWord: function(category, word) {
+        AppDispatcher.handleViewAction({
+            actionType: Constants.CREATE_FILTER_WORD,
+            category: category,
+            word: word
+        });
+    },
+    deleteFilterWord: function(category, word) {
+        AppDispatcher.handleViewAction({
+            actionType: Constants.DELETE_FILTER_WORD,
+            category: category,
+            word: word
+        });
     }
 };
 module.exports = Actions;

@@ -15,6 +15,15 @@ module.exports = {
     },
 
     applyFilters: function() {
+        this._applyHideElementsFilters();
+        this._applyTweetFilters();
+    },
+
+    _applyTweetFilters: function() {
+        var mutedWords = PreferencesStore.getWordsForFilterCategory('muted');
+    },
+
+    _applyHideElementsFilters: function() {
         var appliedFilters = PreferencesStore.getHiddenElements();
         var nonAppliedFilters = _.difference(_.keys(hiddableElements), appliedFilters);
 

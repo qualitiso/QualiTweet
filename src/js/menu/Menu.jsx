@@ -27,7 +27,12 @@ var Menu = React.createClass({
         return (
             <div>
                 <Header/>
-                <Form hiddenElements={this.state.hiddenElements} />
+                <Form
+                    hiddenElements={this.state.hiddenElements}
+                    highlightedWords={this.state.highlightedWords}
+                    mutedWords={this.state.mutedWords}
+                    hiddenWords={this.state.hiddenWords}
+                />
             </div>
         );
     },
@@ -38,7 +43,10 @@ var Menu = React.createClass({
 
     _getState: function() {
         return {
-            hiddenElements: PreferencesStore.getHiddenElements()
+            hiddenElements: PreferencesStore.getHiddenElements(),
+            highlightedWords: PreferencesStore.getWordsForFilterCategory('highlighted'),
+            mutedWords: PreferencesStore.getWordsForFilterCategory('muted'),
+            hiddenWords:PreferencesStore.getWordsForFilterCategory('hidden')
         };
     }
 });
