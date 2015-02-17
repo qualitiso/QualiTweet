@@ -23,6 +23,11 @@ function initConfig(grunt) {
                 files: {
                     'dist/js/background-bundle.js': 'src/js/background.js'
                 }
+            },
+            filters: {
+                files: {
+                    'dist/js/filters-bundle.js': 'src/js/filters.js'
+                }
             }
         },
 
@@ -50,7 +55,8 @@ function initConfig(grunt) {
             main: {
                 files: {
                     'dist/js/menu-bundle.js': 'dist/js/menu-bundle.js',
-                    'dist/js/background-bundle.js': 'dist/js/background-bundle.js'
+                    'dist/js/background-bundle.js': 'dist/js/background-bundle.js',
+                    'dist/js/filters-bundle.js': 'dist/js/filters-bundle.js'
                 }
             }
         },

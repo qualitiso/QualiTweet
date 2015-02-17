@@ -82,10 +82,15 @@ module.exports = {
      * @private
      */
     _onGoogleSyncChanged: function(changes, areaName) {
-        console.log('_onGoogleSyncChanged', changes, areaName);
+        if(areaName === 'sync') {
+            if(changes.hasOwnProperty(HIDDEN_ELEMENTS_KEY)) {
+                this._onHiddenElementsChanged(changes[HIDDEN_ELEMENTS_KEY].newValue);
+            }
+        }
     },
 
     _onHiddenElementsChanged: function(hiddenElements) {
+        console.log('hiddenElementsListChanged');
         Actions.hiddenElementsListChanged(hiddenElements);
     }
 
