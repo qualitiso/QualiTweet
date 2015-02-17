@@ -1,4 +1,29 @@
-.qualitweet-muted {
-    font-size: 12px;
-    opacity: 0.3;
+.qualitweet-highlighted {
+    background: #e4ecf7;
+    font-size: 18px;
+    line-height: 1.5em;
 }
+
+.qualitweet-muted {
+    filter: alpha(opacity=25);
+    font-size: 10px;
+    line-height: 1.5em;
+    opacity: .25;
+    padding: 3px 12px;
+    zoom: 1;
+}
+
+.qualitweet-muted .avatar {
+    height: 24px;
+    width: 24px;
+}
+
+.qualitweet-muted:hover {
+    filter: alpha(opacity=75);
+    opacity: .75;
+}
+
+.qualitweet-hidden {
+    display: none;
+}
+

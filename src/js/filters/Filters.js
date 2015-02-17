@@ -24,23 +24,27 @@ module.exports = {
     _applyTweetFilters: function() {
 
         var allTweets = document.querySelectorAll('.content-main .tweet');
+        var that = this;
+        ['muted', 'highlighted', 'hidden'].forEach(function(category) {
+            that._applyTweetFiltersForCategory(allTweets, category);
+        });
+    },
 
-        var mutedWords = PreferencesStore.getWordsForFilterCategory('muted');
-        var mutedWordsRegExp = new RegExp(mutedWords.join("|"), 'i');
+    _applyTweetFiltersForCategory: function(allTweets, category) {
+        var words = PreferencesStore.getWordsForFilterCategory(category);
+        var regExp = new RegExp(words.join("|"), 'i');
 
         Array.prototype.forEach.call(allTweets, function(tweet) {
             //var screenname = tweet.dataset.screenName;
             var text = tweet.querySelector('.js-tweet-text').firstChild.textContent;
             //var context = tweet.querySelector('.context').firstChild;
-            if(mutedWords.length > 0 && mutedWordsRegExp.test(text)) {
-                tweet.classList.add('qualitweet-muted');
+            if(words.length > 0 && regExp.test(text)) {
+                tweet.classList.add('qualitweet-'+category);
             } else {
-                tweet.classList.remove('qualitweet-muted');
+                tweet.classList.remove('qualitweet-'+category);
             }
         });
     },
-
-
 
     // ----- Hidden elements ----- //
 

@@ -65,10 +65,10 @@ module.exports = {
 
             var filterKey = getFilterKey(filterName);
 
-            if(_.difference(filters[filterKey], newValue).length === 0 && _.difference(newValue, filters[filterKey]).length === 0) {
+            if(_.difference(filters[filterName], newValue).length === 0 && _.difference(newValue, filters[filterName]).length === 0) {
                 resolve();
             } else {
-                filters[filterKey] = newValue;
+                filters[filterName] = newValue;
                 var dataToSave = {};
                 dataToSave[filterKey] = newValue;
                 that._saveInGoogleSync(dataToSave).then(resolve);
