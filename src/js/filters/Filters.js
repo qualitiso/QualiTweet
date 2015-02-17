@@ -24,24 +24,28 @@ module.exports = {
     _applyTweetFilters: function() {
 
         var allTweets = document.querySelectorAll('.content-main .tweet');
-        var that = this;
-        ['muted', 'highlighted', 'hidden'].forEach(function(category) {
-            that._applyTweetFiltersForCategory(allTweets, category);
-        });
-    },
-
-    _applyTweetFiltersForCategory: function(allTweets, category) {
-        var words = PreferencesStore.getWordsForFilterCategory(category);
-        var regExp = new RegExp(words.join("|"), 'i');
+        var highlightedWords = PreferencesStore.getWordsForFilterCategory('highlighted');
+        var mutedWords = PreferencesStore.getWordsForFilterCategory('muted');
+        var hiddenWords = PreferencesStore.getWordsForFilterCategory('hidden');
+        var regExpHighlighted = new RegExp(highlightedWords.join("|"), 'i');
+        var regExpMuted = new RegExp(mutedWords.join("|"), 'i');
+        var regExpExpHidden = new RegExp(hiddenWords.join("|"), 'i');
 
         Array.prototype.forEach.call(allTweets, function(tweet) {
             //var screenname = tweet.dataset.screenName;
             var text = tweet.querySelector('.js-tweet-text').firstChild.textContent;
             //var context = tweet.querySelector('.context').firstChild;
-            if(words.length > 0 && regExp.test(text)) {
-                tweet.classList.add('qualitweet-'+category);
-            } else {
-                tweet.classList.remove('qualitweet-'+category);
+
+            tweet.classList.remove('qualitweet-highlighted');
+            tweet.classList.remove('qualitweet-muted');
+            tweet.classList.remove('qualitweet-hidden');
+
+            if(highlightedWords.length > 0 && regExpHighlighted.test(text)) {
+                tweet.classList.add('qualitweet-highlighted');
+            } else if(mutedWords.length > 0 && regExpMuted.test(text)) {
+                tweet.classList.add('qualitweet-muted');
+            } else if(hiddenWords.length > 0 && regExpExpHidden.test(text)) {
+                tweet.classList.add('qualitweet-hidden');
             }
         });
     },
