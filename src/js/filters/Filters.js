@@ -22,21 +22,22 @@ module.exports = {
     // ----- Tweet filters ----- //
 
     _applyTweetFilters: function() {
-        var mutedWords = PreferencesStore.getWordsForFilterCategory('muted');
-        if(mutedWords.length > 0) {
-            var mutedWordsRegExp = new RegExp(mutedWords.join("|"), 'i');
 
-            Array.prototype.forEach.call(document.querySelectorAll('.content-main .tweet'), function(tweet) {
-                //var screenname = tweet.dataset.screenName;
-                var text = tweet.querySelector('.js-tweet-text').firstChild.textContent;
-                //var context = tweet.querySelector('.context').firstChild;
-                if(mutedWordsRegExp.test(text)) {
-                    tweet.classList.add('qualitweet-muted');
-                } else {
-                    tweet.classList.remove('qualitweet-muted');
-                }
-            });
-        }
+        var allTweets = document.querySelectorAll('.content-main .tweet');
+
+        var mutedWords = PreferencesStore.getWordsForFilterCategory('muted');
+        var mutedWordsRegExp = new RegExp(mutedWords.join("|"), 'i');
+
+        Array.prototype.forEach.call(allTweets, function(tweet) {
+            //var screenname = tweet.dataset.screenName;
+            var text = tweet.querySelector('.js-tweet-text').firstChild.textContent;
+            //var context = tweet.querySelector('.context').firstChild;
+            if(mutedWords.length > 0 && mutedWordsRegExp.test(text)) {
+                tweet.classList.add('qualitweet-muted');
+            } else {
+                tweet.classList.remove('qualitweet-muted');
+            }
+        });
     },
 
 
