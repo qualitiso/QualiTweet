@@ -15,7 +15,7 @@ var HideElementsCommands = React.createClass({
             {this._renderCheckbox('hide-tweet', 'btn_twt')}
             {this._renderCheckbox('hide-suggest', 'suggestions')}
             {this._renderCheckbox('hide-trends', 'tendances')}
-            {this._renderCheckbox('hide-footer', 'footer')}
+            {this._renderCheckbox('hide-promoted', 'promoted')}
         </div>
         );
     },

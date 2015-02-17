@@ -2,8 +2,6 @@ var PreferencesStore = require('../menu/PreferencesStore');
 
 module.exports = {
 
-    $trends: null,
-
     init: function() {
         console.log('init filters');
         this._applyFilters();
@@ -13,11 +11,16 @@ module.exports = {
     _applyFilters: function() {
         var filters = PreferencesStore.getHiddenElements();
         // "", "hide-trends", "hide-tweet", "hide-suggest"
-        this.$trends =  this.$trends || document.querySelector('.module.trends');
-        if(filters.indexOf('hide-trends') !== -1) {
-            this.$trends.style.display = 'none';
+        this._applyFilter(filters, '.module.trends', 'hide-trends');
+        this._applyFilter(filters, '.promoted-trend,.promoted-tweet', 'hide-promoted');
+    },
+
+    _applyFilter: function(filters, selector, filterName) {
+        var elements = document.querySelectorAll(selector);
+        if(filters.indexOf(filterName) !== -1) {
+            Array.prototype.forEach.call(elements, function(element) {element.style.display = 'none';});
         } else {
-            this.$trends.style.display = 'block';
+            Array.prototype.forEach.call(elements, function(element) {element.style.display = 'block';});
         }
     }
 };

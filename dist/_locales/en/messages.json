@@ -64,5 +64,8 @@
     },
     "title": {
         "message": "QualiTweet"
+    },
+    "promoted": {
+        "message": "Promoted tweets & trends"
     }
 }
