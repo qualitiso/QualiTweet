@@ -1,26 +1,42 @@
 var PreferencesStore = require('../menu/PreferencesStore');
+var _ = require('lodash');
+
+var hiddableElements = {
+    'hide-trends' : '.module.trends',
+    'hide-promoted' : '.promoted-trend,.promoted-tweet',
+    'hide-suggest' : '.wtf-module',
+    'hide-footer' : '.Footer'
+};
 
 module.exports = {
 
     init: function() {
         console.log('init filters');
-        this._applyFilters();
-        PreferencesStore.addChangeListener(this._applyFilters.bind(this));
+        PreferencesStore.addChangeListener(this.applyFilters.bind(this));
     },
 
-    _applyFilters: function() {
-        var filters = PreferencesStore.getHiddenElements();
-        // "", "hide-trends", "hide-tweet", "hide-suggest"
-        this._applyFilter(filters, '.module.trends', 'hide-trends');
-        this._applyFilter(filters, '.promoted-trend,.promoted-tweet', 'hide-promoted');
+    applyFilters: function() {
+        var appliedFilters = PreferencesStore.getHiddenElements();
+        var nonAppliedFilters = _.difference(_.keys(hiddableElements), appliedFilters);
+
+        this._hideElements(this._getElementsMatchingFilters(appliedFilters));
+        this._showElements(this._getElementsMatchingFilters(nonAppliedFilters));
     },
 
-    _applyFilter: function(filters, selector, filterName) {
-        var elements = document.querySelectorAll(selector);
-        if(filters.indexOf(filterName) !== -1) {
-            Array.prototype.forEach.call(elements, function(element) {element.style.display = 'none';});
-        } else {
-            Array.prototype.forEach.call(elements, function(element) {element.style.display = 'block';});
-        }
+    _getElementsMatchingFilters: function(filters) {
+        var selectorToHide = filters.map(function(filter) {
+            return hiddableElements[filter];
+        }).reduce(function(previous, current) {
+            return previous+','+current;
+        });
+        return document.querySelectorAll(selectorToHide);
+    },
+
+    _hideElements: function(elements) {
+        Array.prototype.forEach.call(elements, function(element) {element.style.display = 'none';});
+    },
+
+    _showElements: function(elements) {
+        Array.prototype.forEach.call(elements, function(element) {element.style.display = 'block';});
     }
 };

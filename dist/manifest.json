@@ -3,8 +3,8 @@
     "scripts": ["js/background-bundle.js"]
   },
   "content_scripts": [{
-    "css": ["css/main-bundle.css"],
-    "js": ["js/menu-bundle.js"],
+    "css": ["css/filters-bundle.css"],
+    "js": ["js/page-bundle.js"],
     "matches": ["http://twitter.com/*", "https://twitter.com/*"]
   }],
   "default_locale": "en",

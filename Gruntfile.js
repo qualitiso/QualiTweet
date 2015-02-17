@@ -24,6 +24,11 @@ function initConfig(grunt) {
                     'dist/js/background-bundle.js': 'src/js/background.js'
                 }
             },
+            page: {
+                files: {
+                    'dist/js/page-bundle.js': 'src/js/page.js'
+                }
+            },
             filters: {
                 files: {
                     'dist/js/filters-bundle.js': 'src/js/filters.js'
@@ -45,9 +50,13 @@ function initConfig(grunt) {
         },
 
         concat: {
-            css: {
-                src: CSS_SRC,
-                dest: 'dist/css/main-bundle.css'
+            menucss: {
+                src: 'menu/src/css/menu/*.css',
+                dest: 'dist/css/menu-bundle.css'
+            },
+            filetrscss: {
+                src: 'menu/src/css/filters/*.css',
+                dest: 'dist/css/filters-bundle.css'
             }
         },
 
@@ -56,7 +65,8 @@ function initConfig(grunt) {
                 files: {
                     'dist/js/menu-bundle.js': 'dist/js/menu-bundle.js',
                     'dist/js/background-bundle.js': 'dist/js/background-bundle.js',
-                    'dist/js/filters-bundle.js': 'dist/js/filters-bundle.js'
+                    'dist/js/filters-bundle.js': 'dist/js/filters-bundle.js',
+                    'dist/js/page-bundle.js': 'dist/js/page-bundle.js'
                 }
             }
         },
@@ -64,7 +74,8 @@ function initConfig(grunt) {
         cssmin: {
             target: {
                 files: {
-                    'dist/css/main.css': ['src/css/*.css']
+                    'dist/css/menu-bundle.css': ['dist/css/menu-bundle.css'],
+                    'dist/css/filters-bundle.css': ['dist/css/filters-bundle.css']
                 }
             }
         },
