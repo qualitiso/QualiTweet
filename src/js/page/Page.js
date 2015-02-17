@@ -6,12 +6,17 @@ module.exports = {
         var that = this;
         Filters.init();
         PreferencesService.init().then(function() {
-            document.addEventListener('DOMNodeInserted', that._onDOMContentLoaded.bind(that));
+            document.addEventListener('DOMNodeInserted', that._onDOMNodeInserted.bind(that));
         });
 
     },
 
-    _onDOMContentLoaded: function() {
-        Filters.applyFilters();
+    _onDOMNodeInserted: function(ev) {
+        if(ev.path[0].querySelector) {
+            var tweet = ev.path[0].querySelector('.original-tweet');
+            if(tweet !== null) {
+                Filters.applyOnTweet(tweet);
+            }
+        }
     }
 };

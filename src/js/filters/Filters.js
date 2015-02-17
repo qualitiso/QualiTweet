@@ -2,6 +2,7 @@ var PreferencesStore = require('../menu/PreferencesStore');
 var _ = require('lodash');
 
 var hiddableElements = {
+    'hide-tweet': '.js-global-new-tweet',
     'hide-trends' : '.module.trends',
     'hide-promoted' : '.promoted-trend,.promoted-tweet',
     'hide-suggest' : '.wtf-module',
@@ -19,19 +20,25 @@ module.exports = {
         this._applyTweetFilters();
     },
 
+    applyOnTweet: function(tweet) {
+        this._applyOnTweets([tweet]);
+    },
+
     // ----- Tweet filters ----- //
 
     _applyTweetFilters: function() {
+        var allTweets = document.querySelectorAll('.original-tweet');
+        this._applyOnTweets(allTweets);
+    },
 
-        var allTweets = document.querySelectorAll('.content-main .tweet');
+    _applyOnTweets: function(tweets) {
         var highlightedWords = PreferencesStore.getWordsForFilterCategory('highlighted');
         var mutedWords = PreferencesStore.getWordsForFilterCategory('muted');
         var hiddenWords = PreferencesStore.getWordsForFilterCategory('hidden');
         var regExpHighlighted = new RegExp(highlightedWords.join("|"), 'i');
         var regExpMuted = new RegExp(mutedWords.join("|"), 'i');
         var regExpExpHidden = new RegExp(hiddenWords.join("|"), 'i');
-
-        Array.prototype.forEach.call(allTweets, function(tweet) {
+        Array.prototype.forEach.call(tweets, function(tweet) {
             //var screenname = tweet.dataset.screenName;
             var text = tweet.querySelector('.js-tweet-text').firstChild.textContent;
             //var context = tweet.querySelector('.context').firstChild;
@@ -61,12 +68,16 @@ module.exports = {
     },
 
     _getElementsMatchingFilters: function(filters) {
-        var selectorToHide = filters.map(function(filter) {
-            return hiddableElements[filter];
-        }).reduce(function(previous, current) {
-            return previous+','+current;
-        });
-        return document.querySelectorAll(selectorToHide);
+        if(filters.length > 0) {
+            var selectorToHide = filters.map(function(filter) {
+                return hiddableElements[filter];
+            }).reduce(function(previous, current) {
+                return previous+','+current;
+            });
+            return document.querySelectorAll(selectorToHide);
+        } else {
+            return [];
+        }
     },
 
     _hideElements: function(elements) {
