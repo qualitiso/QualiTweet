@@ -33,11 +33,8 @@ var PreferencesStore = objectAssign(EventEmitter.prototype, {
     dispatcherIndex: AppDispatcher.register(function (payload) {
         var action = payload.action;
 
-        console.log('store changed');
-
         switch (action.actionType) {
             case Constants.HIDDEN_ELEMENTS_LIST_CHANGED:
-                console.log('HIDDEN_ELEMENTS_LIST_CHANGED');
                 hiddenElements = action.hiddenElements;
                 PreferencesStore.emitChange();
                 break;

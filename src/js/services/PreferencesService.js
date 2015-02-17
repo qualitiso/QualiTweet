@@ -90,7 +90,6 @@ module.exports = {
     },
 
     _onHiddenElementsChanged: function(hiddenElements) {
-        console.log('hiddenElementsListChanged');
         Actions.hiddenElementsListChanged(hiddenElements);
     }
 

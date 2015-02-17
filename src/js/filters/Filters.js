@@ -11,7 +11,6 @@ var hiddableElements = {
 module.exports = {
 
     init: function() {
-        console.log('init filters');
         PreferencesStore.addChangeListener(this.applyFilters.bind(this));
     },
 
