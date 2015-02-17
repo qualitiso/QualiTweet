@@ -51,11 +51,11 @@ function initConfig(grunt) {
 
         concat: {
             menucss: {
-                src: 'menu/src/css/menu/*.css',
+                src: 'src/css/menu/*.css',
                 dest: 'dist/css/menu-bundle.css'
             },
             filetrscss: {
-                src: 'menu/src/css/filters/*.css',
+                src: 'src/css/filters/*.css',
                 dest: 'dist/css/filters-bundle.css'
             }
         },

@@ -2,7 +2,7 @@
 var React = require('react');
 var Actions = require('../Actions');
 
-var Form = React.createClass({
+var FilterList = React.createClass({
 
     propTypes: {
         filters: React.PropTypes.array.isRequired,
@@ -33,4 +33,4 @@ var Form = React.createClass({
     }
 });
 
-module.exports = Form;
+module.exports = FilterList;

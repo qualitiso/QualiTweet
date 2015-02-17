@@ -19,9 +19,29 @@ module.exports = {
         this._applyTweetFilters();
     },
 
+    // ----- Tweet filters ----- //
+
     _applyTweetFilters: function() {
         var mutedWords = PreferencesStore.getWordsForFilterCategory('muted');
+        if(mutedWords.length > 0) {
+            var mutedWordsRegExp = new RegExp(mutedWords.join("|"), 'i');
+
+            Array.prototype.forEach.call(document.querySelectorAll('.content-main .tweet'), function(tweet) {
+                //var screenname = tweet.dataset.screenName;
+                var text = tweet.querySelector('.js-tweet-text').firstChild.textContent;
+                //var context = tweet.querySelector('.context').firstChild;
+                if(mutedWordsRegExp.test(text)) {
+                    tweet.classList.add('qualitweet-muted');
+                } else {
+                    tweet.classList.remove('qualitweet-muted');
+                }
+            });
+        }
     },
+
+
+
+    // ----- Hidden elements ----- //
 
     _applyHideElementsFilters: function() {
         var appliedFilters = PreferencesStore.getHiddenElements();

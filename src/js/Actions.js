@@ -7,11 +7,11 @@ var Actions = {
             hiddenElements: hiddenElements
         });
     },
-    filterTermsChanged: function (category, terms) {
+    newFilterWordsList: function(category, words) {
         AppDispatcher.handleViewAction({
-            actionType: Constants.FILTER_TERMS_CHANGED,
+            actionType: Constants.NEW_FILTER_WORDS_LIST,
             category: category,
-            terms: terms
+            words: words
         });
     },
     createFilterWord: function(category, word) {

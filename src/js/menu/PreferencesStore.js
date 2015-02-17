@@ -70,6 +70,10 @@ var PreferencesStore = objectAssign(EventEmitter.prototype, {
                 hiddenElements = action.hiddenElements;
                 PreferencesStore.emitChange();
                 break;
+            case Constants.NEW_FILTER_WORDS_LIST:
+                filterWords[category] = _.cloneDeep(action.words);
+                PreferencesStore.emitChange();
+                break;
             case Constants.CREATE_FILTER_WORD:
                 addFilterWord(category,word);
                 PreferencesStore.emitChange();

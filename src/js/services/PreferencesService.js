@@ -4,19 +4,18 @@ var BPromise = require('bluebird');
 var HIDDEN_ELEMENTS_KEY = 'hidden-elements';
 
 var HIDDEN_TERMS = 'hidden-terms';
-var MUTED_TERMS = 'muted-terms';
+var MUTED_WORDS = 'muted-terms';
 var HIGHLIGHTED_TERMS = 'highlighted-terms';
 
 var PreferencesStore = require('../menu/PreferencesStore');
 var Actions = require('../Actions');
 
+var hiddenElements = [];
+var hiddenTerms = [];
+var mutedWords = [];
+var highlightedTerms = [];
+
 module.exports = {
-
-    hiddenElements: [],
-
-    hiddenTerms: [],
-    mutedTerms: [],
-    highlightedTerms: [],
 
     init: function() {
 
@@ -27,11 +26,8 @@ module.exports = {
                 chrome.storage.onChanged.addListener(that._onGoogleSyncChanged.bind(that));
                 chrome.storage.sync.get(null, function(items) {
                     that._onHiddenElementsChanged(items[HIDDEN_ELEMENTS_KEY] || []);
+                    that._onMutedWordsChanged(items[MUTED_WORDS] || []);
                     PreferencesStore.addChangeListener(that._onStoreChange.bind(that));
-                    /*that.hiddenTerms = items[HIDDEN_TERMS] || [];
-                    that.mutedTerms = items[MUTED_TERMS] || [];
-                    that.highlightedTerms = items[HIGHLIGHTED_TERMS] || [];
-                    */
                     resolve();
                 });
             } catch(e) {
@@ -42,6 +38,7 @@ module.exports = {
 
     _onStoreChange: function() {
         this._saveHiddenElementsListIfNeeded(PreferencesStore.getHiddenElements());
+        this._saveMutedWordsIfNeeded(PreferencesStore.getWordsForFilterCategory('muted'));
     },
 
     // Read
@@ -52,15 +49,34 @@ module.exports = {
 
     // Write
 
+    _saveMutedWordsIfNeeded: function(newMutedWords) {
+        var that = this;
+        return new BPromise(function(resolve) {
+            if(_.difference(mutedWords, newMutedWords).length === 0 && _.difference(newMutedWords, mutedWords).length === 0) {
+                resolve();
+            } else {
+                mutedWords = newMutedWords;
+                var dataToSave = {};
+                dataToSave[MUTED_WORDS] = mutedWords;
+                that._saveInGoogleSync(dataToSave).then(resolve);
+            }
+        });
+    },
+
+    _onMutedWordsChanged: function(newMutedWords) {
+        mutedWords = newMutedWords;
+        Actions.newFilterWordsList('muted', mutedWords);
+    },
+
     _saveHiddenElementsListIfNeeded: function(newHiddenElements) {
         var that = this;
         return new BPromise(function(resolve) {
-            if(_.difference(that.hiddenElements, newHiddenElements).length === 0 && _.difference(newHiddenElements, that.hiddenElements).length === 0) {
+            if(_.difference(hiddenElements, newHiddenElements).length === 0 && _.difference(newHiddenElements, hiddenElements).length === 0) {
                 resolve();
             } else {
-                that.hiddenElements = newHiddenElements;
+                hiddenElements = newHiddenElements;
                 var dataToSave = {};
-                dataToSave[HIDDEN_ELEMENTS_KEY] = that.hiddenElements;
+                dataToSave[HIDDEN_ELEMENTS_KEY] = hiddenElements;
                 that._saveInGoogleSync(dataToSave).then(resolve);
             }
         });
@@ -85,11 +101,14 @@ module.exports = {
         if(areaName === 'sync') {
             if(changes.hasOwnProperty(HIDDEN_ELEMENTS_KEY)) {
                 this._onHiddenElementsChanged(changes[HIDDEN_ELEMENTS_KEY].newValue);
+            } else if(changes.hasOwnProperty(MUTED_WORDS)) {
+                this._onMutedWordsChanged(changes[MUTED_WORDS].newValue);
             }
         }
     },
 
     _onHiddenElementsChanged: function(hiddenElements) {
+        hiddenElements = hiddenElements;
         Actions.hiddenElementsListChanged(hiddenElements);
     }
 

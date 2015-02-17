@@ -2,7 +2,7 @@
 var React = require('react');
 var Actions = require('../Actions');
 
-var Form = React.createClass({
+var AddWordFrom = React.createClass({
 
     propTypes: {
         filterCategory: React.PropTypes.string.isRequired
@@ -35,4 +35,4 @@ var Form = React.createClass({
     }
 });
 
-module.exports = Form;
+module.exports = AddWordFrom;
