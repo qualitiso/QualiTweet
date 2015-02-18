@@ -90,7 +90,7 @@ function initConfig(grunt) {
 
 function registerTasks(grunt) {
     grunt.registerTask('build-dev', ['clean', 'jshint', 'browserify', 'concat']);
-    grunt.registerTask('build-prod', ['clean', 'jshint', 'browserify', 'uglify', 'cssmin']);
+    grunt.registerTask('build-prod', ['clean', 'jshint', 'browserify', 'uglify', 'concat', 'cssmin']);
     grunt.registerTask('default', ['build-dev', 'watch']);
 }
 
