@@ -18,7 +18,7 @@ var Actions = {
         AppDispatcher.handleViewAction({
             actionType: Constants.CREATE_FILTER_WORD,
             category: category,
-            word: word
+            word: word.trim()
         });
     },
     deleteFilterWord: function(category, word) {
