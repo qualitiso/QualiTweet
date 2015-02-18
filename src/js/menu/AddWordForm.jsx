@@ -8,25 +8,21 @@ var AddWordFrom = React.createClass({
         filterCategory: React.PropTypes.string.isRequired
     },
 
-    render: function() {
+    render: function () {
 
         return (
             <div>
                 <div>{chrome.i18n.getMessage('ajout_filtre')}</div>
-                <div id="add-word" className="form-group">
-                    <div className="input-group">
-                        <form onSubmit={this._addWordToFilter}>
-                            <input ref="wordInput" className="form-control" type="text" id="add-word-input" placeholder="@name or #tag or text" />
-                            <span className="input-group-btn">
-                                <button className="btn btn-success" type="submit" data-translate="text">{chrome.i18n.getMessage('ajouter')}</button>
-                            </span>
-                        </form>
+                <form onSubmit={this._addWordToFilter} className="form-inline">
+                    <div className="form-group">
+                        <input ref="wordInput" className="form-control" type="text" placeholder="@name or #tag or text" />
                     </div>
-                </div>
+                    <button className="btn btn-success" type="submit" data-translate="text">{chrome.i18n.getMessage('ajouter')}</button>
+                </form>
             </div>);
     },
 
-    _addWordToFilter: function(e) {
+    _addWordToFilter: function (e) {
         // TODO
         e.preventDefault();
         var word = this.refs.wordInput.getDOMNode().value;

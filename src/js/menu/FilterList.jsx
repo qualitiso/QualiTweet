@@ -12,7 +12,7 @@ var FilterList = React.createClass({
     render: function() {
 
         var words = this.props.filters.map(function(word) {
-            return(<span className="word">{word}<span className="delete" onClick={this._deleteFilter.bind(this,word)}>X</span></span>);
+            return(<div className="word">{word}<div className="delete" onClick={this._deleteFilter.bind(this,word)}></div></div>);
         }.bind(this));
 
         return (
@@ -20,7 +20,7 @@ var FilterList = React.createClass({
             <div>{chrome.i18n.getMessage('lst_filtres')}</div>
             <div className="form-group">
                 <div className="input-group">
-                    <div id="currentFilterValues">
+                    <div className="words">
                         {words}
                     </div>
                 </div>

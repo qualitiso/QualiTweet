@@ -25,11 +25,13 @@ var HideElementsCommands = React.createClass({
         var checked = this.props.hiddenElements.indexOf(id) !== -1;
 
         return (
-            <div className="checkbox">
-                <label>
-                    <input ref={id} type="checkbox" onChange={this._onChange.bind(this, id)} checked={checked}/>
-                    <span>{chrome.i18n.getMessage(i18nKey)}</span>
-                </label>
+            <div className="dans-un-paragraphe">
+                <div className="checkbox">
+                    <label>
+                        <input ref={id} type="checkbox" onChange={this._onChange.bind(this, id)} checked={checked}/>
+                        <span>{chrome.i18n.getMessage(i18nKey)}</span>
+                    </label>
+                </div>
             </div>
         );
     },

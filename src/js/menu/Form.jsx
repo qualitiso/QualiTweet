@@ -13,8 +13,11 @@ var Form = React.createClass({
     },
 
     render: function() {
-        return (<div>
+        return (
+        <div>
+            <hr/>
             <HideElementsCommands hiddenElements={this.props.hiddenElements}/>
+            <hr/>
             <EditFilters
                 highlightedWords={this.props.highlightedWords}
                 mutedWords={this.props.mutedWords}
