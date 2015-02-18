@@ -10,13 +10,9 @@ module.exports = {
         });
 
     },
-
     _onDOMNodeInserted: function(ev) {
         if(ev.path[0].querySelector) {
-            var tweet = ev.path[0].querySelector('.original-tweet');
-            if(tweet !== null) {
-                Filters.applyOnTweet(tweet);
-            }
+            Filters.applyFilters();
         }
     }
 };

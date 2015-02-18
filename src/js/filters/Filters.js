@@ -20,10 +20,6 @@ module.exports = {
         this._applyTweetFilters();
     },
 
-    applyOnTweet: function(tweet) {
-        this._applyOnTweets([tweet]);
-    },
-
     // ----- Tweet filters ----- //
 
     _applyTweetFilters: function() {
