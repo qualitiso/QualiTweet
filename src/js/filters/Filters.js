@@ -40,34 +40,37 @@ module.exports = {
         var mutedWords = PreferencesStore.getWordsForFilterCategory('muted');
         var hiddenWords = PreferencesStore.getWordsForFilterCategory('hidden');
 
-        var regExpHighlighted = new RegExp(highlightedWords.join("|"), 'i');
-        var regExpMuted = new RegExp(mutedWords.join("|"), 'i');
-        var regExpExpHidden = new RegExp(hiddenWords.join("|"), 'i');
+        if(highlightedWords.length > 0 || mutedWords.length > 0 || hiddenWords.length > 0) {
 
-        Array.prototype.forEach.call(tweets, function(tweet) {
-            var screenname = '@'+tweet.dataset.screenName;
+            var regExpHighlighted = new RegExp(highlightedWords.join("|"), 'i');
+            var regExpMuted = new RegExp(mutedWords.join("|"), 'i');
+            var regExpExpHidden = new RegExp(hiddenWords.join("|"), 'i');
 
-            var text = tweet.querySelector('.js-tweet-text').childNodes.map(function(childNode) {
-                return childNode.textContent.trim();
-            }).join(' ').trim();
+            Array.prototype.forEach.call(tweets, function(tweet) {
+                var screenname = '@'+tweet.dataset.screenName;
 
-            var $retweet = tweet.querySelector('.js-retweet-text .js-user-profile-link');
-            var retweet = $retweet !== null ? ('@'+$retweet.getAttribute('href').substring(1)) : '';
+                var text = tweet.querySelector('.js-tweet-text').childNodes.map(function(childNode) {
+                    return childNode.textContent.trim();
+                }).join(' ').trim();
 
-            tweet.classList.remove('qualitweet-highlighted');
-            tweet.classList.remove('qualitweet-muted');
-            tweet.classList.remove('qualitweet-hidden');
+                var $retweet = tweet.querySelector('.js-retweet-text .js-user-profile-link');
+                var retweet = $retweet !== null ? ('@'+$retweet.getAttribute('href').substring(1)) : '';
 
-            var textToAnalyse = screenname+' '+text+' '+retweet;
+                tweet.classList.remove('qualitweet-highlighted');
+                tweet.classList.remove('qualitweet-muted');
+                tweet.classList.remove('qualitweet-hidden');
 
-            if(highlightedWords.length > 0 && regExpHighlighted.test(textToAnalyse)) {
-                tweet.classList.add('qualitweet-highlighted');
-            } else if(mutedWords.length > 0 && regExpMuted.test(textToAnalyse)) {
-                tweet.classList.add('qualitweet-muted');
-            } else if(hiddenWords.length > 0 && regExpExpHidden.test(textToAnalyse)) {
-                tweet.classList.add('qualitweet-hidden');
-            }
-        });
+                var textToAnalyse = screenname+' '+text+' '+retweet;
+
+                if(highlightedWords.length > 0 && regExpHighlighted.test(textToAnalyse)) {
+                    tweet.classList.add('qualitweet-highlighted');
+                } else if(mutedWords.length > 0 && regExpMuted.test(textToAnalyse)) {
+                    tweet.classList.add('qualitweet-muted');
+                } else if(hiddenWords.length > 0 && regExpExpHidden.test(textToAnalyse)) {
+                    tweet.classList.add('qualitweet-hidden');
+                }
+            });
+        }
     },
 
     // ----- Hidden elements ----- //
