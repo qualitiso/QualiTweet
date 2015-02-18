@@ -24,11 +24,13 @@ var EditFilters = React.createClass({
             <div>
                 <div>{chrome.i18n.getMessage('select_cat')}</div>
                 <div className="form-group">
-                    <select value={this.state.filterListDisplayed}name="listeTypesFiltres" id="listeTypesFiltres" className="form-control" onChange={this._onSelectedFilterChanged}>
-                        <option value="highlighted">{chrome.i18n.getMessage('evidence')}</option>
-                        <option value="muted">{chrome.i18n.getMessage('discret')}</option>
-                        <option value="hidden">{chrome.i18n.getMessage('cache')}</option>
-                    </select>
+                    <form>
+                        <select value={this.state.filterListDisplayed}name="listeTypesFiltres" id="listeTypesFiltres" className="form-control" onChange={this._onSelectedFilterChanged}>
+                            {this._selectOption('highlighted', 'evidence')}
+                            {this._selectOption('muted', 'discret')}
+                            {this._selectOption('hidden', 'cache')}
+                        </select>
+                    </form>
                 </div>
 
                 <FilterList
@@ -40,6 +42,11 @@ var EditFilters = React.createClass({
             </div>
         </div>
         );
+    },
+
+    _selectOption: function(category, i18nKey) {
+        var text = chrome.i18n.getMessage(i18nKey) + ' ('+this.props[category+'Words'].length+')';
+        return (<option value={category}>{text}</option>);
     },
 
     _onSelectedFilterChanged: function(evt) {
