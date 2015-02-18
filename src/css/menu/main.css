@@ -1,0 +1,63 @@
+.words {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    display: block;
+    height: 100px;
+    left: 15px;
+    list-style-type: none;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.words .word {
+    color: #2f3d4a;
+    padding: 3px 6px;
+    position: relative;
+}
+
+.words .word .delete {
+    background-image: url('/images/delete.png');
+    cursor: pointer;
+    height: 10px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 10px;
+}
+
+.dans-un-paragraphe {
+    margin-left: 22px;
+}
+
+.input-group {
+    width: 100%;
+}
+
+
+h1, .h1 {
+    font-size: 23px;
+    margin-bottom: 0;
+    margin-top: 12px;
+    text-align: center;
+}
+
+h2, .h2 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    margin-top: 6px;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #bdbdbd;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
+.texte-explicatif {
+    color: #b1b1b1;
+    font-size: 13px;
+    font-style: italic;
+}
