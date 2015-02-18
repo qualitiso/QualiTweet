@@ -46,22 +46,19 @@ module.exports = {
 
         Array.prototype.forEach.call(tweets, function(tweet) {
             var screenname = '@'+tweet.dataset.screenName;
-            var text = tweet.querySelector('.js-tweet-text').firstChild.textContent;
+
+            var text = tweet.querySelector('.js-tweet-text').childNodes.map(function(childNode) {
+                return childNode.textContent.trim();
+            }).join(' ').trim();
+
             var $retweet = tweet.querySelector('.js-retweet-text .js-user-profile-link');
             var retweet = $retweet !== null ? ('@'+$retweet.getAttribute('href').substring(1)) : '';
-            var $hashtags = tweet.querySelectorAll('.twitter-hashtag');
-            var hashtags = '';
-            if($hashtags.length > 0) {
-                hashtags = $hashtags.map(function($hashtag) {
-                    return $hashtag.textContent;
-                }).join(' ');
-            }
 
             tweet.classList.remove('qualitweet-highlighted');
             tweet.classList.remove('qualitweet-muted');
             tweet.classList.remove('qualitweet-hidden');
 
-            var textToAnalyse = screenname+' '+text+' '+retweet+ ' '+hashtags;
+            var textToAnalyse = screenname+' '+text+' '+retweet;
 
             if(highlightedWords.length > 0 && regExpHighlighted.test(textToAnalyse)) {
                 tweet.classList.add('qualitweet-highlighted');
