@@ -16,8 +16,12 @@ module.exports = {
     },
 
     applyFilters: function() {
-        this._applyHideElementsFilters();
+        this.applyHideElementsFilters();
         this._applyTweetFilters();
+    },
+
+    applyWordFilterOnTweet: function(tweet) {
+        this._applyOnTweets([tweet]);
     },
 
     // ----- Tweet filters ----- //
@@ -55,7 +59,7 @@ module.exports = {
 
     // ----- Hidden elements ----- //
 
-    _applyHideElementsFilters: function() {
+    applyHideElementsFilters: function() {
         var appliedFilters = PreferencesStore.getHiddenElements();
         var nonAppliedFilters = _.difference(_.keys(hiddableElements), appliedFilters);
 
