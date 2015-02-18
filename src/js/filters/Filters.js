@@ -30,7 +30,7 @@ module.exports = {
     // ----- Tweet filters ----- //
 
     _applyTweetFilters: function() {
-        var allTweets = document.querySelectorAll('.original-tweet');
+        var allTweets = document.querySelectorAll('.js-tweet,.original-tweet');
         this._applyOnTweets(allTweets);
     },
 
