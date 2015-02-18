@@ -9,6 +9,9 @@ var hiddableElements = {
     'hide-footer' : '.Footer'
 };
 
+NodeList.prototype.forEach = Array.prototype.forEach;
+NodeList.prototype.map = Array.prototype.map;
+
 module.exports = {
 
     init: function() {
@@ -32,26 +35,39 @@ module.exports = {
     },
 
     _applyOnTweets: function(tweets) {
+
         var highlightedWords = PreferencesStore.getWordsForFilterCategory('highlighted');
         var mutedWords = PreferencesStore.getWordsForFilterCategory('muted');
         var hiddenWords = PreferencesStore.getWordsForFilterCategory('hidden');
+
         var regExpHighlighted = new RegExp(highlightedWords.join("|"), 'i');
         var regExpMuted = new RegExp(mutedWords.join("|"), 'i');
         var regExpExpHidden = new RegExp(hiddenWords.join("|"), 'i');
+
         Array.prototype.forEach.call(tweets, function(tweet) {
-            //var screenname = tweet.dataset.screenName;
+            var screenname = '@'+tweet.dataset.screenName;
             var text = tweet.querySelector('.js-tweet-text').firstChild.textContent;
-            //var context = tweet.querySelector('.context').firstChild;
+            var $retweet = tweet.querySelector('.js-retweet-text .js-user-profile-link');
+            var retweet = $retweet !== null ? ('@'+$retweet.getAttribute('href').substring(1)) : '';
+            var $hashtags = tweet.querySelectorAll('.twitter-hashtag');
+            var hashtags = '';
+            if($hashtags.length > 0) {
+                hashtags = $hashtags.map(function($hashtag) {
+                    return $hashtag.textContent;
+                }).join(' ');
+            }
 
             tweet.classList.remove('qualitweet-highlighted');
             tweet.classList.remove('qualitweet-muted');
             tweet.classList.remove('qualitweet-hidden');
 
-            if(highlightedWords.length > 0 && regExpHighlighted.test(text)) {
+            var textToAnalyse = screenname+' '+text+' '+retweet+ ' '+hashtags;
+
+            if(highlightedWords.length > 0 && regExpHighlighted.test(textToAnalyse)) {
                 tweet.classList.add('qualitweet-highlighted');
-            } else if(mutedWords.length > 0 && regExpMuted.test(text)) {
+            } else if(mutedWords.length > 0 && regExpMuted.test(textToAnalyse)) {
                 tweet.classList.add('qualitweet-muted');
-            } else if(hiddenWords.length > 0 && regExpExpHidden.test(text)) {
+            } else if(hiddenWords.length > 0 && regExpExpHidden.test(textToAnalyse)) {
                 tweet.classList.add('qualitweet-hidden');
             }
         });
@@ -81,10 +97,10 @@ module.exports = {
     },
 
     _hideElements: function(elements) {
-        Array.prototype.forEach.call(elements, function(element) {element.style.display = 'none';});
+        elements.forEach(function(element) {element.style.display = 'none';});
     },
 
     _showElements: function(elements) {
-        Array.prototype.forEach.call(elements, function(element) {element.style.display = 'block';});
+        elements.forEach(function(element) {element.style.display = 'block';});
     }
 };
