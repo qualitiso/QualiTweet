@@ -15,11 +15,14 @@ var Actions = {
         });
     },
     createFilterWord: function(category, word) {
-        AppDispatcher.handleViewAction({
-            actionType: Constants.CREATE_FILTER_WORD,
-            category: category,
-            word: word.trim()
-        });
+        word = word.trim();
+        if(word.length > 0) {
+            AppDispatcher.handleViewAction({
+                actionType: Constants.CREATE_FILTER_WORD,
+                category: category,
+                word: word.trim()
+            });
+        }
     },
     deleteFilterWord: function(category, word) {
         AppDispatcher.handleViewAction({
