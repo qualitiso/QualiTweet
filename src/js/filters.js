@@ -1,6 +1,5 @@
 require('./services/PreferencesService')
-    .init()
-    .then(function() {
+    .init(function() {
         require('./filters/Filters').init();
     });
 

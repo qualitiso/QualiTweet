@@ -5,9 +5,13 @@ module.exports = {
     init: function() {
         var that = this;
         Filters.init();
-        PreferencesService.init().then(function() {
-            Filters.applyFilters();
-            document.addEventListener('DOMNodeInserted', that._onDOMNodeInserted.bind(that));
+        PreferencesService.init(function(error) {
+            if(error) {
+                console.error('Can\'t initialize Qualitweet page script', e);
+            } else {
+                Filters.applyFilters();
+                document.addEventListener('DOMNodeInserted', that._onDOMNodeInserted.bind(that));
+            }
         });
 
     },

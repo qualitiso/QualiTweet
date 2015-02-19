@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var BPromise = require('bluebird');
 
 var HIDDEN_ELEMENTS_KEY = 'hidden-elements';
 
@@ -21,25 +20,23 @@ function getFilterKey(filter) {
 
 module.exports = {
 
-    init: function() {
+    init: function(callback) {
 
         var that = this;
 
-        return new BPromise(function(resolve) {
-            try {
-                chrome.storage.onChanged.addListener(that._onGoogleSyncChanged.bind(that));
-                chrome.storage.sync.get(null, function(items) {
-                    that._onHiddenElementsChanged(items[HIDDEN_ELEMENTS_KEY] || []);
-                    AVAILABLE_FILTERS.forEach(function(filter) {
-                        that._onFilterChanged(filter, items[getFilterKey(filter)] || []);
-                    });
-                    PreferencesStore.addChangeListener(that._onStoreChange.bind(that));
-                    resolve();
+        try {
+            chrome.storage.onChanged.addListener(that._onGoogleSyncChanged.bind(that));
+            chrome.storage.sync.get(null, function(items) {
+                that._onHiddenElementsChanged(items[HIDDEN_ELEMENTS_KEY] || []);
+                AVAILABLE_FILTERS.forEach(function(filter) {
+                    that._onFilterChanged(filter, items[getFilterKey(filter)] || []);
                 });
-            } catch(e) {
-                reject(e);
-            }
-        });
+                PreferencesStore.addChangeListener(that._onStoreChange.bind(that));
+                callback();
+            });
+        } catch(e) {
+            callback(e);
+        }
     },
 
     _onStoreChange: function() {
@@ -61,19 +58,15 @@ module.exports = {
 
     _saveFilterIfNeeded: function(filterName, newValue) {
         var that = this;
-        return new BPromise(function(resolve) {
 
-            var filterKey = getFilterKey(filterName);
+        var filterKey = getFilterKey(filterName);
 
-            if(_.difference(filters[filterName], newValue).length === 0 && _.difference(newValue, filters[filterName]).length === 0) {
-                resolve();
-            } else {
-                filters[filterName] = newValue;
-                var dataToSave = {};
-                dataToSave[filterKey] = newValue;
-                that._saveInGoogleSync(dataToSave).then(resolve);
-            }
-        });
+        if(_.difference(filters[filterName], newValue).length !== 0 || _.difference(newValue, filters[filterName]).length !== 0) {
+            filters[filterName] = newValue;
+            var dataToSave = {};
+            dataToSave[filterKey] = newValue;
+            that._saveInGoogleSync(dataToSave);
+        }
     },
 
     _onFilterChanged: function(filter, newValue) {
@@ -83,26 +76,17 @@ module.exports = {
 
     _saveHiddenElementsListIfNeeded: function(newHiddenElements) {
         var that = this;
-        return new BPromise(function(resolve) {
-            if(_.difference(hiddenElements, newHiddenElements).length === 0 && _.difference(newHiddenElements, hiddenElements).length === 0) {
-                resolve();
-            } else {
-                hiddenElements = newHiddenElements;
-                var dataToSave = {};
-                dataToSave[HIDDEN_ELEMENTS_KEY] = hiddenElements;
-                that._saveInGoogleSync(dataToSave).then(resolve);
-            }
-        });
+        if(_.difference(hiddenElements, newHiddenElements).length !== 0 || _.difference(newHiddenElements, hiddenElements).length !== 0) {
+            hiddenElements = newHiddenElements;
+            var dataToSave = {};
+            dataToSave[HIDDEN_ELEMENTS_KEY] = hiddenElements;
+            that._saveInGoogleSync(dataToSave);
+        }
     },
 
     _saveInGoogleSync: function(data) {
-        return new BPromise(function(resolve) {
-            chrome.storage.sync.set(data, function() {
-                resolve();
-            });
-        });
+        chrome.storage.sync.set(data);
     },
-
 
     /**
      *
