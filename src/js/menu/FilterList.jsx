@@ -11,7 +11,13 @@ var FilterList = React.createClass({
 
     render: function() {
 
-        var words = this.props.filters.map(function(word) {
+        var words = this.props.filters.sort(function(a, b) {
+            var word1 = a.toLowerCase();
+            var word2 = b.toLowerCase();
+            if (word1 < word2) return -1;
+            if (word1 > word2) return 1;
+            return 0;
+        }).map(function(word) {
             return(<div className="word">{word}<div className="delete" onClick={this._deleteFilter.bind(this,word)}></div></div>);
         }.bind(this));
 
