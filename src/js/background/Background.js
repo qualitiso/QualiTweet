@@ -3,60 +3,58 @@ var PreferencesService = require('../services/PreferencesService');
 
 module.exports = {
     init: function () {
-        PreferencesService.init(function(error) {
-            if(error) {
+        PreferencesService.init(function (error) {
+            if (error) {
                 console.error('Can\'t initialize Qualitweet background', e);
             } else {
-                chrome.runtime.onInstalled.addListener(function () {
-                    var menuItems = [
-                        {
-                            'title': chrome.i18n.getMessage('mettre_en_evidence'),
-                            'contexts': ['selection'],
-                            'id': 'highlighted',
-                            'onclick': addFilter
-                        },
-                        {
-                            'title': chrome.i18n.getMessage('rendre_discret'),
-                            'contexts': ['selection'],
-                            'id': 'muted',
-                            'onclick': addFilter
-                        },
-                        {
-                            'title': chrome.i18n.getMessage('masquer'),
-                            'contexts': ['selection'],
-                            'id': 'hidden',
-                            'onclick': addFilter
-                        },
-                        {
-                            'title': 'Séparateur',
-                            'contexts': ['selection'],
-                            'type': 'separator'
-                        },
-                        {
-                            'title': chrome.i18n.getMessage('reglages'),
-                            'contexts': ['all'],
-                            'onclick': displaySettingsMenu
-                        },
-                        {
-                            'title': 'Séparateur',
-                            'contexts': ['selection'],
-                            'type': 'separator'
-                        },
-                        {
-                            'title': chrome.i18n.getMessage('recherche_twitter'),
-                            'contexts': ['selection'],
-                            'onclick': searchOnTwitter
-                        }
-                    ];
+                var menuItems = [
+                    {
+                        'title': chrome.i18n.getMessage('mettre_en_evidence'),
+                        'contexts': ['selection'],
+                        'id': 'highlighted',
+                        'onclick': addFilter
+                    },
+                    {
+                        'title': chrome.i18n.getMessage('rendre_discret'),
+                        'contexts': ['selection'],
+                        'id': 'muted',
+                        'onclick': addFilter
+                    },
+                    {
+                        'title': chrome.i18n.getMessage('masquer'),
+                        'contexts': ['selection'],
+                        'id': 'hidden',
+                        'onclick': addFilter
+                    },
+                    {
+                        'title': 'Séparateur',
+                        'contexts': ['selection'],
+                        'type': 'separator'
+                    },
+                    {
+                        'title': chrome.i18n.getMessage('reglages'),
+                        'contexts': ['all'],
+                        'onclick': displaySettingsMenu
+                    },
+                    {
+                        'title': 'Séparateur',
+                        'contexts': ['selection'],
+                        'type': 'separator'
+                    },
+                    {
+                        'title': chrome.i18n.getMessage('recherche_twitter'),
+                        'contexts': ['selection'],
+                        'onclick': searchOnTwitter
+                    }
+                ];
 
-                    menuItems.forEach(function (menuItem) {
-                        chrome.contextMenus.create(menuItem);
-                    });
+                menuItems.forEach(function (menuItem) {
+                    chrome.contextMenus.create(menuItem);
+                });
 
-                    execOnTwitterTabs(function (tab) {
-                        chrome.tabs.executeScript(tab.id, {
-                            file: 'js/filters-bundle.js'
-                        });
+                execOnTwitterTabs(function (tab) {
+                    chrome.tabs.executeScript(tab.id, {
+                        file: 'js/filters-bundle.js'
                     });
                 });
             }
@@ -65,8 +63,8 @@ module.exports = {
 };
 
 function execOnTwitterTabs(cb) {
-    chrome.tabs.query({url: '*://twitter.com/'}, function(tabs) {
-        tabs.forEach(function(tab) {
+    chrome.tabs.query({url: '*://twitter.com/'}, function (tabs) {
+        tabs.forEach(function (tab) {
             cb(tab);
         });
     });
@@ -83,5 +81,5 @@ function searchOnTwitter(info) {
 function addFilter(info) {
     var word = info.selectionText.trim();
     var category = info.menuItemId;
-    Actions.createFilterWord(category,word);
+    Actions.createFilterWord(category, word);
 }
