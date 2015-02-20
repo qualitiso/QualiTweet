@@ -1,6 +1,6 @@
 {
   "name": "qualitweet",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "Apply filters to your Twitter timeline",
   "main": "index.js",
   "scripts": {
